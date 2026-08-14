@@ -24,7 +24,7 @@ function chatbotDevProxy(env) {
         })
         req.on('end', async () => {
           const apiKey = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY
-          const model = env.GEMINI_MODEL || process.env.GEMINI_MODEL || 'gemini-flash-latest'
+          const model = env.GEMINI_MODEL || process.env.GEMINI_MODEL || 'gemini-flash-lite-latest'
 
           res.setHeader('Content-Type', 'application/json')
 
