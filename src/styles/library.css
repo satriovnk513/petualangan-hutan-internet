@@ -418,3 +418,287 @@
   max-width: 600px;
   margin: 0 auto;
 }
+
+/* -------------------------------------------------------------------------- */
+/* 8. Article Gallery (.article-gallery)                                      */
+/* -------------------------------------------------------------------------- */
+.article-gallery {
+  margin: var(--sp-5) 0;
+}
+
+.article-gallery__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--forest-900);
+  margin-bottom: var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.article-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-3);
+}
+
+@media (min-width: 640px) {
+  .article-gallery__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.article-gallery__item {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  border: 2px solid var(--cream-200);
+  background-color: var(--cream-100);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+.article-gallery__item:hover,
+.article-gallery__item:focus-visible {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--shadow-md);
+  border-color: var(--sun-400);
+}
+
+.article-gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.article-gallery__item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 61, 43, 0.6) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--sp-2);
+  color: white;
+  font-size: var(--text-sm);
+}
+
+.article-gallery__item:hover .article-gallery__item-overlay,
+.article-gallery__item:focus-visible .article-gallery__item-overlay {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 9. Lightbox Modal (.lightbox-overlay)                                      */
+/* -------------------------------------------------------------------------- */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: rgba(15, 30, 20, 0.94);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  animation: lightbox-fade-in 0.25s ease forwards;
+  user-select: none;
+}
+
+@keyframes lightbox-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lightbox-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+  z-index: 10002;
+  color: var(--cream-50);
+}
+
+.lightbox-counter {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 4px var(--sp-3);
+  border-radius: var(--r-pill);
+}
+
+.lightbox-close {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--cream-50);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.lightbox-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 80vh;
+  margin: auto 0;
+}
+
+.lightbox-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  max-height: 75vh;
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 65vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.lightbox-caption {
+  color: var(--cream-100);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  text-align: center;
+  margin-top: var(--sp-3);
+  max-width: 650px;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.4);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+}
+
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: var(--r-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10001;
+}
+
+.lightbox-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-nav-btn--prev {
+  left: 10px;
+}
+
+.lightbox-nav-btn--next {
+  right: 10px;
+}
+
+@media (max-width: 640px) {
+  .lightbox-nav-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .lightbox-nav-btn--prev {
+    left: 4px;
+  }
+  .lightbox-nav-btn--next {
+    right: 4px;
+  }
+  .lightbox-image {
+    max-height: 55vh;
+  }
+}
+
+.lightbox-thumbnails {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-4);
+  overflow-x: auto;
+  z-index: 10002;
+}
+
+.lightbox-thumb {
+  width: 48px;
+  height: 36px;
+  border-radius: var(--r-sm);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.lightbox-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lightbox-thumb:hover {
+  opacity: 0.9;
+}
+
+.lightbox-thumb.active {
+  opacity: 1;
+  border-color: var(--sun-400);
+  transform: scale(1.15);
+}

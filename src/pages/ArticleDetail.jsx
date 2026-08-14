@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useParams } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
@@ -12,6 +13,8 @@ export default function ArticleDetail() {
   const audienceLabels = AUDIENCE_LABELS[lang] || AUDIENCE_LABELS.id
 
   const [copied, setCopied] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
+  const touchStartXRef = useRef(null)
 
   const article = lib.articles?.find((a) => a.slug === slug)
 
@@ -25,12 +28,73 @@ export default function ArticleDetail() {
     }
   }, [article, t])
 
+  const galleryImages = article?.images && article.images.length > 0
+    ? article.images
+    : (article?.thumbnail ? [{ url: article.thumbnail, caption: article.title }] : [])
+
   const handleCopyLink = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(window.location.href)
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
     }
+  }
+
+  const openLightbox = (index) => {
+    setLightboxIndex(index)
+  }
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null)
+  }, [])
+
+  const showPrev = useCallback(() => {
+    if (galleryImages.length <= 1) return
+    setLightboxIndex((prev) => (prev > 0 ? prev - 1 : galleryImages.length - 1))
+  }, [galleryImages.length])
+
+  const showNext = useCallback(() => {
+    if (galleryImages.length <= 1) return
+    setLightboxIndex((prev) => (prev < galleryImages.length - 1 ? prev + 1 : 0))
+  }, [galleryImages.length])
+
+  // Keyboard navigation & lock body scroll for Lightbox
+  useEffect(() => {
+    if (lightboxIndex === null) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') showPrev()
+      if (e.key === 'ArrowRight') showNext()
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [lightboxIndex, closeLightbox, showPrev, showNext])
+
+  // Touch Swipe handlers for mobile lightbox
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return
+    const touchEndX = e.changedTouches[0].clientX
+    const diff = touchStartXRef.current - touchEndX
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) {
+        showNext()
+      } else {
+        showPrev()
+      }
+    }
+    touchStartXRef.current = null
   }
 
   if (!article) {
@@ -57,7 +121,7 @@ export default function ArticleDetail() {
   // Other related articles (excluding current)
   const otherArticles = (lib.articles || []).filter((a) => a.slug !== slug).slice(0, 2)
 
-  // Format date if possible
+  // Format date
   const formattedDate = (() => {
     try {
       const d = new Date(article.date)
@@ -71,6 +135,8 @@ export default function ArticleDetail() {
     }
   })()
 
+  const currentLightboxImg = lightboxIndex !== null ? galleryImages[lightboxIndex] : null
+
   return (
     <div className="container container--narrow section">
       <article className="article-detail">
@@ -79,16 +145,38 @@ export default function ArticleDetail() {
           <span aria-hidden="true">←</span> {t.library.backToLibrary}
         </Link>
 
-        {/* Thumbnail Image */}
+        {/* Hero Image (Clickable for Lightbox) */}
         {article.thumbnail && (
-          <img
-            src={article.thumbnail}
-            alt={article.title}
-            className="article-detail__hero"
-            onError={(e) => {
-              e.target.style.display = 'none'
-            }}
-          />
+          <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => openLightbox(0)}>
+            <img
+              src={article.thumbnail}
+              alt={article.title}
+              className="article-detail__hero"
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 'calc(var(--sp-4) + 12px)',
+                right: '16px',
+                background: 'rgba(15, 61, 43, 0.85)',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: 'var(--r-pill)',
+                fontSize: 'var(--text-xs)',
+                fontWeight: 700,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backdropFilter: 'blur(4px)',
+                boxShadow: 'var(--shadow-sm)',
+              }}
+            >
+              <span>🔍</span> {lang === 'id' ? 'Klik untuk galeri foto' : 'Click for photo gallery'}
+            </div>
+          </div>
         )}
 
         {/* Metadata */}
@@ -111,11 +199,49 @@ export default function ArticleDetail() {
         {/* Title */}
         <h1 className="article-detail__title">{article.title}</h1>
 
-        {/* Body */}
+        {/* Body Content */}
         <div
           className="article-detail__body"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
+
+        {/* Photo Gallery Grid (when multiple images are present) */}
+        {galleryImages.length > 1 && (
+          <section className="article-gallery" aria-label={lang === 'id' ? 'Galeri Dokumentasi Foto' : 'Photo Documentation Gallery'}>
+            <h2 className="article-gallery__title">
+              <span aria-hidden="true">📸</span>
+              <span>{lang === 'id' ? 'Galeri Dokumentasi Kegiatan' : 'Activity Photo Gallery'}</span>
+              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--ink-soft)', fontWeight: 'normal', marginLeft: 'auto' }}>
+                ({galleryImages.length} {lang === 'id' ? 'Foto' : 'Photos'})
+              </span>
+            </h2>
+            <div className="article-gallery__grid">
+              {galleryImages.map((img, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className="article-gallery__item"
+                  onClick={() => openLightbox(idx)}
+                  title={img.caption || `${article.title} - Foto ${idx + 1}`}
+                  aria-label={`${lang === 'id' ? 'Lihat foto' : 'View photo'} ${idx + 1}: ${img.caption || ''}`}
+                >
+                  <img
+                    src={img.url}
+                    alt={img.caption || `${article.title} ${idx + 1}`}
+                    className="article-gallery__img"
+                    loading="lazy"
+                  />
+                  <div className="article-gallery__item-overlay" aria-hidden="true">
+                    <span>🔍</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--ink-soft)', textAlign: 'center', marginTop: 'var(--sp-2)' }}>
+              💡 {lang === 'id' ? 'Klik salah satu foto untuk melihat tampilan penuh dan menggeser foto.' : 'Click any photo to view full size and slide through the gallery.'}
+            </p>
+          </section>
+        )}
 
         {/* Action bar (Share link) */}
         <div
@@ -169,6 +295,98 @@ export default function ArticleDetail() {
           </div>
         )}
       </article>
+
+      {/* Lightbox Modal rendered via Portal */}
+      {lightboxIndex !== null &&
+        currentLightboxImg &&
+        createPortal(
+          <div
+            className="lightbox-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label={lang === 'id' ? 'Galeri Foto Layar Penuh' : 'Fullscreen Photo Gallery'}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) closeLightbox()
+            }}
+          >
+            {/* Header: counter + close */}
+            <div className="lightbox-header">
+              <span className="lightbox-counter">
+                📸 {lightboxIndex + 1} / {galleryImages.length}
+              </span>
+              <button
+                type="button"
+                className="lightbox-close"
+                onClick={closeLightbox}
+                aria-label={lang === 'id' ? 'Tutup galeri' : 'Close gallery'}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Navigation buttons */}
+            {galleryImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="lightbox-nav-btn lightbox-nav-btn--prev"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    showPrev()
+                  }}
+                  aria-label={lang === 'id' ? 'Foto sebelumnya' : 'Previous photo'}
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className="lightbox-nav-btn lightbox-nav-btn--next"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    showNext()
+                  }}
+                  aria-label={lang === 'id' ? 'Foto berikutnya' : 'Next photo'}
+                >
+                  ›
+                </button>
+              </>
+            )}
+
+            {/* Body */}
+            <div className="lightbox-body" onClick={(e) => e.stopPropagation()}>
+              <div className="lightbox-image-container">
+                <img
+                  src={currentLightboxImg.url}
+                  alt={currentLightboxImg.caption || `${article.title} ${lightboxIndex + 1}`}
+                  className="lightbox-image"
+                />
+                {currentLightboxImg.caption && (
+                  <p className="lightbox-caption">{currentLightboxImg.caption}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Thumbnails strip */}
+            {galleryImages.length > 1 && (
+              <div className="lightbox-thumbnails" onClick={(e) => e.stopPropagation()}>
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`lightbox-thumb ${idx === lightboxIndex ? 'active' : ''}`}
+                    onClick={() => setLightboxIndex(idx)}
+                    aria-label={`${lang === 'id' ? 'Pilih foto' : 'Select photo'} ${idx + 1}`}
+                  >
+                    <img src={img.url} alt="" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>,
+          document.body,
+        )}
     </div>
   )
 }

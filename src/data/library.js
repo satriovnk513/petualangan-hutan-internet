@@ -23,6 +23,24 @@ export const libraryData = {
         category: 'kegiatan',
         date: '2026-08-13',
         thumbnail: '/images/library/seminar-literasi.jpg',
+        images: [
+          {
+            url: '/images/library/seminar-literasi.jpg',
+            caption: 'Foto Utama: Dokumentasi 25 Siswa SDN Kalibaru 05 Pagi mengikuti Seminar Literasi Digital',
+          },
+          {
+            url: '/images/library/seminar-img-2464.jpg',
+            caption: 'Suasana kelas saat siswa berinteraksi dan belajar tentang keamanan digital',
+          },
+          {
+            url: '/images/library/seminar-img-2494.jpg',
+            caption: 'Antusiasme para siswa SDN Kalibaru 05 saat menyimak materi dan pemaparan',
+          },
+          {
+            url: '/images/library/seminar-img-2500.jpg',
+            caption: 'Siswa aktif bertanya dan berdiskusi selama kegiatan pembelajaran literasi digital',
+          },
+        ],
         tags: ['Literasi Digital', 'Sekolah', 'Kegiatan'],
         audience: ['anak', 'guru', 'orang-tua'],
         title: '25 Penjaga Baru dari SDN Kalibaru 05! 🌟',
@@ -108,6 +126,24 @@ export const libraryData = {
         category: 'event',
         date: '2026-08-13',
         thumbnail: '/images/library/seminar-literasi.jpg',
+        images: [
+          {
+            url: '/images/library/seminar-literasi.jpg',
+            caption: 'Featured: 25 Students from SDN Kalibaru 05 Pagi attending the Digital Literacy Seminar',
+          },
+          {
+            url: '/images/library/seminar-img-2464.jpg',
+            caption: 'Classroom atmosphere as students learn about internet safety and digital wisdom',
+          },
+          {
+            url: '/images/library/seminar-img-2494.jpg',
+            caption: 'Enthusiasm of SDN Kalibaru 05 students during the presentation and training',
+          },
+          {
+            url: '/images/library/seminar-img-2500.jpg',
+            caption: 'Students actively asking questions and engaging in digital literacy discussions',
+          },
+        ],
         tags: ['Digital Literacy', 'School', 'Event'],
         audience: ['anak', 'guru', 'orang-tua'],
         title: '25 New Guardians from SDN Kalibaru 05! 🌟',
