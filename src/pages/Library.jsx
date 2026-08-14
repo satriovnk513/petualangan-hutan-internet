@@ -148,14 +148,18 @@ export default function Library() {
                       {tk.description}
                     </p>
                     <div className="toolkit-card__action">
-                      {tk.fileUrl ? (
+                      {tk.link ? (
+                        <Link to={tk.link} className="btn btn--accent btn--sm">
+                          {tk.actionText || t.library.viewResource} →
+                        </Link>
+                      ) : tk.fileUrl ? (
                         <a
                           href={tk.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn btn--accent btn--sm"
                         >
-                          {t.library.viewResource} 📥
+                          {tk.actionText || t.library.viewResource} 📥
                         </a>
                       ) : (
                         <button

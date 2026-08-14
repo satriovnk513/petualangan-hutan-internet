@@ -11,20 +11,15 @@ export default function Header() {
   const { lang } = useLang()
   const t = getUi(lang)
 
-  /* Menu mendatar di desktop sengaja hanya berisi tiga halaman pendamping.
-   * Beranda dijangkau lewat logo, dan permainan lewat tombol utama di hero,
-   * supaya tidak ada tombol yang berulang. */
   const navItems = [
     { to: '/ruang-belajar', label: t.nav.library, emoji: '📚' },
-    { to: '/guru', label: t.nav.teachers, emoji: '👩‍🏫' },
-    { to: '/orang-tua', label: t.nav.parents, emoji: '👨‍👩‍👧' },
+    { to: '/mulai', label: t.nav.play, emoji: '🌳' },
     { to: '/tentang', label: t.nav.about, emoji: '💡' },
   ]
 
-  /* Di ponsel, menu tarik adalah satu-satunya navigasi, jadi isinya lengkap. */
+  /* Di ponsel, menu tarik menyertakan Beranda lalu ketiga menu utama di atas. */
   const menuItems = [
     { to: '/', label: t.nav.home, emoji: '🏡', end: true },
-    { to: '/main', label: t.nav.play, emoji: '🌳' },
     ...navItems,
   ]
 

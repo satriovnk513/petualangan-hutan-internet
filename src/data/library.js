@@ -70,40 +70,34 @@ export const libraryData = {
     toolkits: [
       {
         id: 'tk-01',
-        type: 'PDF',
+        type: 'Panduan',
         audience: 'guru',
-        fileUrl: null,
+        link: '/guru',
         icon: '📖',
         title: 'Panduan Guru: Literasi Digital Kelas 4-6',
-        description: 'Materi lengkap untuk mengajarkan keamanan berinternet di kelas.'
+        description: 'Materi lengkap untuk mengajarkan keamanan berinternet di kelas.',
+        actionText: 'Buka Halaman Guru',
       },
       {
         id: 'tk-02',
-        type: 'PDF',
+        type: 'Panduan',
         audience: 'orang-tua',
-        fileUrl: null,
+        link: '/orang-tua',
         icon: '👪',
         title: 'Panduan Orang Tua: Mendampingi Anak di Dunia Digital',
-        description: 'Tips mendampingi petualangan anak di Hutan Internet.'
-      },
-      {
-        id: 'tk-03',
-        type: 'Worksheet',
-        audience: 'anak',
-        fileUrl: null,
-        icon: '✏️',
-        title: 'Worksheet: Detektif Hutan Internet',
-        description: 'Lembar kerja seru untuk menguji pengetahuan digitalmu!'
+        description: 'Tips mendampingi petualangan anak di Hutan Internet.',
+        actionText: 'Buka Halaman Orang Tua',
       },
       {
         id: 'tk-04',
-        type: 'Presentasi',
+        type: 'PDF',
         audience: 'guru',
-        fileUrl: null,
+        fileUrl: '/materials/Paparan_Hutan_Internet_FINAL.pdf',
         icon: '📊',
         title: 'Materi Presentasi Literasi Digital',
-        description: 'Slide interaktif untuk mengajar literasi digital.'
-      }
+        description: 'Slide interaktif untuk mengajar literasi digital format PDF.',
+        actionText: 'Buka / Unduh Paparan (PDF)',
+      },
     ]
   },
   en: {
@@ -161,40 +155,34 @@ export const libraryData = {
     toolkits: [
       {
         id: 'tk-01',
-        type: 'PDF',
+        type: 'Guide',
         audience: 'guru',
-        fileUrl: null,
+        link: '/guru',
         icon: '📖',
         title: 'Teacher Guide: Digital Literacy for Grades 4-6',
-        description: 'Complete material to teach internet safety in the classroom.'
+        description: 'Complete material to teach internet safety in the classroom.',
+        actionText: 'Open Teacher Page',
       },
       {
         id: 'tk-02',
-        type: 'PDF',
+        type: 'Guide',
         audience: 'orang-tua',
-        fileUrl: null,
+        link: '/orang-tua',
         icon: '👪',
         title: 'Parent Guide: Accompanying Kids in the Digital World',
-        description: 'Tips for guiding your child\'s adventure in the Internet Forest.'
-      },
-      {
-        id: 'tk-03',
-        type: 'Worksheet',
-        audience: 'anak',
-        fileUrl: null,
-        icon: '✏️',
-        title: 'Worksheet: Internet Forest Detective',
-        description: 'Fun worksheets to test your digital knowledge!'
+        description: 'Tips for guiding your child\'s adventure in the Internet Forest.',
+        actionText: 'Open Parent Page',
       },
       {
         id: 'tk-04',
-        type: 'Presentasi',
+        type: 'PDF',
         audience: 'guru',
-        fileUrl: null,
+        fileUrl: '/materials/Paparan_Hutan_Internet_FINAL.pdf',
         icon: '📊',
         title: 'Digital Literacy Presentation Materials',
-        description: 'Interactive slides for teaching digital literacy.'
-      }
+        description: 'Interactive presentation slides in PDF format for teaching digital literacy.',
+        actionText: 'Open / Download Slides (PDF)',
+      },
     ]
   }
 };
