@@ -1,7 +1,8 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLang } from '../../i18n/LanguageContext'
 import { getUi } from '../../data/ui'
 import { generateAnswer } from '../../chatbot/chatService'
+import { getRandomQuestions } from '../../chatbot/quickQuestions'
 import ChatbotButton from './ChatbotButton'
 import ChatbotPanel from './ChatbotPanel'
 
@@ -20,7 +21,14 @@ export default function ChatbotRoot() {
   const [hasUnread, setHasUnread] = useState(false)
   const [isThinking, setIsThinking] = useState(false)
   const [isError, setIsError] = useState(false)
-  const [showChips, setShowChips] = useState(true)
+
+  // Bank pertanyaan yang berputar / acak
+  const [suggestedQuestions, setSuggestedQuestions] = useState(() => getRandomQuestions(lang, 4))
+
+  // Perbarui pertanyaan saat bahasa berganti
+  useEffect(() => {
+    setSuggestedQuestions(getRandomQuestions(lang, 4))
+  }, [lang])
 
   /* Inisialisasi pesan dengan greeting bot. */
   const [messages, setMessages] = useState(() => [
@@ -47,13 +55,19 @@ export default function ChatbotRoot() {
 
   const handleClose = useCallback(() => setOpen(false), [])
 
+  // Fungsi untuk mengacak pertanyaan ide baru
+  const handleRefreshQuestions = useCallback(() => {
+    setSuggestedQuestions((prev) => getRandomQuestions(langRef.current, 4, prev))
+  }, [])
+
   const sendMessage = useCallback(async (query) => {
     /* Tambah pesan user. */
     setMessages((prev) => [
       ...prev,
       { id: nextId(), role: 'user', text: query, sourceLabel: null },
     ])
-    setShowChips(false)
+    // Otomatis putar pertanyaan baru saat user mengirim pertanyaan
+    setSuggestedQuestions((prev) => getRandomQuestions(langRef.current, 4, prev))
     setIsThinking(true)
     setIsError(false)
 
@@ -87,12 +101,14 @@ export default function ChatbotRoot() {
 
   return (
     <>
-      {/* Floating button — selalu tampil */}
-      <ChatbotButton
-        label={t.openLabel}
-        onClick={handleOpen}
-        hasUnread={hasUnread}
-      />
+      {/* Floating button — HANYA tampil saat chatbot tertutup agar tidak menghalangi input di mobile */}
+      {!open && (
+        <ChatbotButton
+          label={t.openLabel}
+          onClick={handleOpen}
+          hasUnread={hasUnread}
+        />
+      )}
 
       {/* Panel chatbot */}
       {open && (
@@ -101,7 +117,8 @@ export default function ChatbotRoot() {
           messages={messages}
           isThinking={isThinking}
           isError={isError}
-          showChips={showChips}
+          questions={suggestedQuestions}
+          onRefreshQuestions={handleRefreshQuestions}
           onSend={sendMessage}
           onClose={handleClose}
           onQuickQuestion={sendMessage}
@@ -110,3 +127,4 @@ export default function ChatbotRoot() {
     </>
   )
 }
+

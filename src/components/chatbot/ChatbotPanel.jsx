@@ -7,14 +7,15 @@ import pikoChatbotImg from '../../assets/characters/piko_chatbot.png'
  * Menerima semua state dari ChatbotRoot (controlled component).
  */
 export default function ChatbotPanel({
-  t,              // chatbot UI strings dari i18n
-  messages,       // array { id, role, text, sourceLabel }
+  t,                    // chatbot UI strings dari i18n
+  messages,             // array { id, role, text, sourceLabel }
   isThinking,
   isError,
+  questions = [],       // array pertanyaan acak / dinamis
+  onRefreshQuestions,   // callback untuk ganti ide pertanyaan
   onSend,
   onClose,
   onQuickQuestion,
-  showChips,      // sembunyikan chips setelah pertama dipakai
 }) {
   const [draft, setDraft] = useState('')
   const messagesEndRef = useRef(null)
@@ -26,12 +27,7 @@ export default function ChatbotPanel({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }, [messages, isThinking])
 
-  /* Fokus ke input saat panel dibuka. */
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
-
-  /* Focus trap: Tab / Shift+Tab dan Escape. */
+  /* Focus trap: Tab / Shift+Tab dan Escape (TIDAK autofocus input di mobile agar keyboard tidak langsung muncul) */
   useEffect(() => {
     const panel = panelRef.current
     if (!panel) return
@@ -146,20 +142,38 @@ export default function ChatbotPanel({
         <div ref={messagesEndRef} aria-hidden="true" />
       </div>
 
-      {/* Quick question chips — hanya tampil selama belum dipakai */}
-      {showChips && (
-        <div className="chatbot-chips" role="group" aria-label="Pertanyaan cepat">
-          {t.quickQuestions.map((q) => (
+      {/* Quick question chips — selalu tampil dan dapat di-refresh */}
+      {questions && questions.length > 0 && (
+        <div className="chatbot-chips" role="group" aria-label={t.ideasTitle || 'Ide Pertanyaan'}>
+          <div className="chatbot-chips__header">
+            <span className="chatbot-chips__title">
+              <span aria-hidden="true">💡</span> {t.ideasTitle || 'Ide Pertanyaan'}
+            </span>
             <button
-              key={q}
               type="button"
-              className="chatbot-chip"
-              onClick={() => handleQuickClick(q)}
+              className="chatbot-chips__refresh"
+              onClick={onRefreshQuestions}
+              aria-label={t.refreshAria || 'Ganti ide pertanyaan'}
+              title={t.refreshIdeas || 'Ganti Ide'}
               disabled={isThinking}
             >
-              {q}
+              <span className="chatbot-chips__refresh-icon" aria-hidden="true">🔄</span>
+              <span>{t.refreshIdeas || 'Ganti Ide'}</span>
             </button>
-          ))}
+          </div>
+          <div className="chatbot-chips__list">
+            {questions.map((q) => (
+              <button
+                key={q}
+                type="button"
+                className="chatbot-chip"
+                onClick={() => handleQuickClick(q)}
+                disabled={isThinking}
+              >
+                {q}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -202,3 +216,4 @@ export default function ChatbotPanel({
     </div>
   )
 }
+

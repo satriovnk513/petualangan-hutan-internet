@@ -374,6 +374,9 @@ export const ui = {
       thinking: 'Piko sedang berpikir…',
       errorMessage: 'Aduh, ada gangguan. Coba kirim lagi, ya.',
       sourcePrefix: 'Sumber materi:',
+      ideasTitle: 'Ide Pertanyaan',
+      refreshIdeas: 'Ganti Ide',
+      refreshAria: 'Ganti ide pertanyaan acak',
       quickQuestions: [
         'Apa itu data pribadi?',
         'Boleh kasih password ke teman?',
@@ -751,6 +754,9 @@ export const ui = {
       thinking: 'Piko is thinking…',
       errorMessage: 'Oops, something went wrong. Please try sending again.',
       sourcePrefix: 'Learning source:',
+      ideasTitle: 'Question Ideas',
+      refreshIdeas: 'Shuffle Ideas',
+      refreshAria: 'Shuffle random question ideas',
       quickQuestions: [
         'What is personal data?',
         'Can I share my password with a friend?',
