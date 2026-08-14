@@ -145,37 +145,58 @@ export default function ArticleDetail() {
           <span aria-hidden="true">←</span> {t.library.backToLibrary}
         </Link>
 
-        {/* Hero Image (Clickable for Lightbox) */}
+        {/* Hero Media: Main photo on top + 3 sub-photos aligned directly underneath */}
         {article.thumbnail && (
-          <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => openLightbox(0)}>
-            <img
-              src={article.thumbnail}
-              alt={article.title}
-              className="article-detail__hero"
-              onError={(e) => {
-                e.target.style.display = 'none'
-              }}
-            />
+          <div className="article-hero-media">
             <div
-              style={{
-                position: 'absolute',
-                bottom: 'calc(var(--sp-4) + 12px)',
-                right: '16px',
-                background: 'rgba(15, 61, 43, 0.85)',
-                color: 'white',
-                padding: '6px 12px',
-                borderRadius: 'var(--r-pill)',
-                fontSize: 'var(--text-xs)',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                backdropFilter: 'blur(4px)',
-                boxShadow: 'var(--shadow-sm)',
-              }}
+              className="article-hero-media__main"
+              onClick={() => openLightbox(0)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openLightbox(0)}
+              aria-label={lang === 'id' ? 'Buka foto utama di galeri' : 'Open main photo in gallery'}
             >
-              <span>🔍</span> {lang === 'id' ? 'Klik untuk galeri foto' : 'Click for photo gallery'}
+              <img
+                src={article.thumbnail}
+                alt={article.title}
+                className="article-detail__hero"
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                }}
+              />
+              <div className="article-hero-media__badge">
+                <span>🔍</span> {lang === 'id' ? 'Galeri Foto' : 'Photo Gallery'}
+              </div>
             </div>
+
+            {/* 3 Sub-photos aligned directly underneath the main photo */}
+            {galleryImages.length > 1 && (
+              <div className="article-hero-media__subgrid">
+                {galleryImages.slice(1).map((img, idx) => {
+                  const actualIdx = idx + 1
+                  return (
+                    <button
+                      key={actualIdx}
+                      type="button"
+                      className="article-hero-media__subitem"
+                      onClick={() => openLightbox(actualIdx)}
+                      title={img.caption || `${article.title} - Foto ${actualIdx + 1}`}
+                      aria-label={`${lang === 'id' ? 'Buka foto' : 'Open photo'} ${actualIdx + 1}: ${img.caption || ''}`}
+                    >
+                      <img
+                        src={img.url}
+                        alt={img.caption || `${article.title} ${actualIdx + 1}`}
+                        className="article-hero-media__subimg"
+                        loading="lazy"
+                      />
+                      <div className="article-hero-media__suboverlay" aria-hidden="true">
+                        <span>🔍</span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
 
@@ -204,44 +225,6 @@ export default function ArticleDetail() {
           className="article-detail__body"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
-
-        {/* Photo Gallery Grid (when multiple images are present) */}
-        {galleryImages.length > 1 && (
-          <section className="article-gallery" aria-label={lang === 'id' ? 'Galeri Dokumentasi Foto' : 'Photo Documentation Gallery'}>
-            <h2 className="article-gallery__title">
-              <span aria-hidden="true">📸</span>
-              <span>{lang === 'id' ? 'Galeri Dokumentasi Kegiatan' : 'Activity Photo Gallery'}</span>
-              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--ink-soft)', fontWeight: 'normal', marginLeft: 'auto' }}>
-                ({galleryImages.length} {lang === 'id' ? 'Foto' : 'Photos'})
-              </span>
-            </h2>
-            <div className="article-gallery__grid">
-              {galleryImages.map((img, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className="article-gallery__item"
-                  onClick={() => openLightbox(idx)}
-                  title={img.caption || `${article.title} - Foto ${idx + 1}`}
-                  aria-label={`${lang === 'id' ? 'Lihat foto' : 'View photo'} ${idx + 1}: ${img.caption || ''}`}
-                >
-                  <img
-                    src={img.url}
-                    alt={img.caption || `${article.title} ${idx + 1}`}
-                    className="article-gallery__img"
-                    loading="lazy"
-                  />
-                  <div className="article-gallery__item-overlay" aria-hidden="true">
-                    <span>🔍</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--ink-soft)', textAlign: 'center', marginTop: 'var(--sp-2)' }}>
-              💡 {lang === 'id' ? 'Klik salah satu foto untuk melihat tampilan penuh dan menggeser foto.' : 'Click any photo to view full size and slide through the gallery.'}
-            </p>
-          </section>
-        )}
 
         {/* Action bar (Share link) */}
         <div
