@@ -1,8 +1,7 @@
 /* ===========================================================================
- * CHATBOT — TANYA HUTAN INTERNET
+ * CHATBOT — TANYA PIKO (AI CHATBOT)
  * ===========================================================================
- * Semua style chatbot di sini, menggunakan token desain yang sudah ada.
- * Tidak ada warna, radius, font, atau bayangan di luar sistem token.
+ * Desain antarmuka responsif ramah anak, berbasis token warna Hutan Internet.
  * ======================================================================== */
 
 /* ========================= ANIMASI ====================================== */
@@ -93,35 +92,36 @@
 
 .chatbot-panel {
   position: fixed;
-  bottom: calc(var(--sp-5) + 60px + var(--sp-3));
+  bottom: calc(var(--sp-5) + 72px);
   right: var(--sp-5);
   z-index: 199;
 
-  width: min(380px, calc(100vw - var(--sp-5) * 2));
-  max-height: min(560px, calc(100dvh - var(--header-h) - 60px - var(--sp-5) * 3));
+  width: min(390px, calc(100vw - var(--sp-5) * 2));
+  max-height: min(600px, calc(100dvh - var(--header-h) - 40px));
 
   display: flex;
   flex-direction: column;
   border-radius: var(--r-xl);
   background: var(--bg-panel);
   border: 2px solid var(--line);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 50px rgba(15, 61, 43, 0.24), 0 0 0 1px rgba(28, 107, 74, 0.1);
 
   animation: chatbot-slide-up 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   overflow: hidden;
 }
 
-/* Mobile: panel menempel di bagian bawah layar, full-width */
-@media (max-width: 479px) {
+/* Mobile: panel menempel di bawah layar (drawer bottom) */
+@media (max-width: 639px) {
   .chatbot-panel {
     bottom: 0;
     right: 0;
     left: 0;
     width: 100%;
-    max-height: 80dvh;
-    border-radius: var(--r-xl) var(--r-xl) 0 0;
-    /* Pastikan panel di atas keyboard virtual */
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    height: 85dvh;
+    max-height: 85dvh;
+    border-radius: 24px 24px 0 0;
+    border-bottom: none;
+    box-shadow: 0 -10px 40px rgba(15, 61, 43, 0.3);
   }
 }
 
@@ -131,21 +131,22 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-4);
+  padding: 12px 16px;
   background: var(--forest-700);
   border-radius: var(--r-xl) var(--r-xl) 0 0;
   flex-shrink: 0;
 }
 
-@media (max-width: 479px) {
+@media (max-width: 639px) {
   .chatbot-panel__header {
-    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    border-radius: 24px 24px 0 0;
+    padding: 14px 18px;
   }
 }
 
 .chatbot-panel__avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--sun-400);
@@ -155,7 +156,7 @@
 
 .chatbot-panel__title {
   font-family: var(--font-display);
-  font-size: var(--text-base);
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--ink-invert);
   margin: 0;
@@ -167,8 +168,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   background: rgba(255, 255, 255, 0.15);
   border: 1.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
@@ -176,11 +177,12 @@
   font-size: var(--text-base);
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
 
 .chatbot-panel__close:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
 }
 
 .chatbot-panel__close:focus-visible {
@@ -194,7 +196,7 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: var(--sp-4) var(--sp-3);
+  padding: 14px 14px;
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
@@ -225,14 +227,14 @@
 .chatmsg--bot {
   flex-direction: row;
   align-self: flex-start;
-  max-width: 88%;
+  max-width: 90%;
 }
 
 /* User: kanan */
 .chatmsg--user {
   flex-direction: row-reverse;
   align-self: flex-end;
-  max-width: 80%;
+  max-width: 82%;
 }
 
 .chatmsg__avatar {
@@ -246,6 +248,7 @@
   border-radius: 50%;
   border: 2px solid var(--sun-400);
   overflow: hidden;
+  margin-bottom: 2px;
 }
 
 .chatmsg__avatar-img {
@@ -256,10 +259,11 @@
 }
 
 .chatmsg__bubble {
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--r-lg);
-  font-size: var(--text-sm);
-  line-height: 1.6;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  word-break: break-word;
 }
 
 /* Bot bubble */
@@ -267,14 +271,14 @@
   background: var(--leaf-100);
   border: 1.5px solid var(--leaf-300);
   color: var(--ink);
-  border-bottom-left-radius: 6px;
+  border-bottom-left-radius: 4px;
 }
 
 /* User bubble */
 .chatmsg--user .chatmsg__bubble {
   background: var(--forest-700);
   color: var(--ink-invert);
-  border-bottom-right-radius: 6px;
+  border-bottom-right-radius: 4px;
 }
 
 .chatmsg__bubble p {
@@ -284,16 +288,17 @@
 
 /* Label sumber materi */
 .chatmsg__source {
-  margin-top: var(--sp-2) !important;
-  font-size: var(--text-xs);
-  color: var(--ink-soft);
-  border-top: 1px solid var(--leaf-300);
-  padding-top: var(--sp-1);
+  margin-top: 8px !important;
+  font-size: 0.75rem;
+  color: var(--forest-800);
+  border-top: 1px solid rgba(28, 107, 74, 0.18);
+  padding-top: 5px;
   font-style: normal;
+  font-weight: 600;
 }
 
 .chatmsg__source em {
-  font-weight: 700;
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -304,11 +309,11 @@
   align-items: center;
   gap: var(--sp-2);
   align-self: flex-start;
-  padding: var(--sp-2) var(--sp-3);
+  padding: 8px 12px;
   background: var(--leaf-100);
   border: 1.5px solid var(--leaf-300);
-  border-radius: var(--r-lg);
-  border-bottom-left-radius: 6px;
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
   animation: chatbot-slide-up 0.22s ease both;
 }
 
@@ -351,13 +356,13 @@
   color: var(--earth-800);
 }
 
-/* ========================= QUICK CHIPS ================================== */
+/* ========================= QUICK CHIPS / IDE PERTANYAAN ================= */
 
 .chatbot-chips {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-top: 1.5px solid var(--line);
   background: var(--cream-100);
   flex-shrink: 0;
@@ -373,7 +378,7 @@
 .chatbot-chips__title {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   font-size: 0.75rem;
   font-weight: 800;
   color: var(--forest-800);
@@ -386,7 +391,7 @@
   gap: 4px;
   padding: 3px 10px;
   background: var(--cream-50);
-  border: 1px solid var(--line-strong);
+  border: 1.5px solid var(--line-strong);
   border-radius: var(--r-pill);
   font-size: 0.75rem;
   font-weight: 800;
@@ -406,6 +411,11 @@
   transform: rotate(180deg);
 }
 
+.chatbot-chips__refresh:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .chatbot-chips__refresh-icon {
   display: inline-block;
   transition: transform 0.25s ease;
@@ -415,49 +425,52 @@
 
 .chatbot-chips__list {
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 2px 2px 6px 2px;
-  /* Smooth horizontal scrollbar */
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) transparent;
-}
-
-.chatbot-chips__list::-webkit-scrollbar {
-  height: 4px;
-}
-.chatbot-chips__list::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
-  border-radius: var(--r-pill);
+  flex-direction: column;
+  gap: 6px;
 }
 
 .chatbot-chip {
-  flex: 0 0 auto;
-  max-width: 280px;
-  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  padding: 8px 12px;
   background: var(--sun-200);
   border: 1.5px solid var(--sun-500);
-  border-radius: var(--r-pill);
+  border-radius: 12px;
   color: #5c4406;
   font-size: 0.8125rem;
   font-weight: 700;
+  line-height: 1.35;
   cursor: pointer;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-  min-height: 32px;
-  display: inline-flex;
-  align-items: center;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.chatbot-chip__text {
+  flex: 1;
+  white-space: normal;
+  word-break: break-word;
+  padding-right: 8px;
+}
+
+.chatbot-chip__arrow {
+  flex: none;
+  font-weight: 900;
+  font-size: 0.875rem;
+  color: #b37400;
+  transition: transform 0.15s ease;
 }
 
 .chatbot-chip:hover:not(:disabled) {
   background: var(--sun-400);
+  border-color: var(--sun-600);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 6px rgba(184, 134, 11, 0.2);
+}
+
+.chatbot-chip:hover:not(:disabled) .chatbot-chip__arrow {
+  transform: translateX(3px);
 }
 
 .chatbot-chip:disabled {
@@ -476,7 +489,7 @@
   display: flex;
   align-items: flex-end;
   gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-3);
+  padding: 10px 14px max(10px, env(safe-area-inset-bottom, 10px));
   border-top: 1.5px solid var(--line);
   background: var(--cream-50);
   flex-shrink: 0;
@@ -485,22 +498,23 @@
 .chatbot-input {
   flex: 1;
   resize: none;
-  min-height: 42px;
-  max-height: 120px;
-  padding: var(--sp-2) var(--sp-3);
+  min-height: 40px;
+  max-height: 100px;
+  padding: 9px 14px;
   background: var(--cream-100);
   border: 2px solid var(--line-strong);
-  border-radius: var(--r-md);
+  border-radius: 20px;
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: 0.875rem;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.45;
   field-sizing: content;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .chatbot-input:focus {
   outline: none;
+  background: #ffffff;
   border-color: var(--forest-600);
 }
 
@@ -517,20 +531,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   background: var(--forest-700);
   border: none;
-  border-radius: var(--r-md);
+  border-radius: 50%;
   color: var(--ink-invert);
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition: background 0.15s ease, transform 0.12s ease;
 }
 
 .chatbot-send:hover:not(:disabled) {
   background: var(--forest-800);
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
 .chatbot-send:disabled {

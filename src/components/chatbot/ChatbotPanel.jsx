@@ -170,7 +170,8 @@ export default function ChatbotPanel({
                 onClick={() => handleQuickClick(q)}
                 disabled={isThinking}
               >
-                {q}
+                <span className="chatbot-chip__text">{q}</span>
+                <span className="chatbot-chip__arrow" aria-hidden="true">→</span>
               </button>
             ))}
           </div>

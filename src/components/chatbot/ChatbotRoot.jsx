@@ -22,12 +22,12 @@ export default function ChatbotRoot() {
   const [isThinking, setIsThinking] = useState(false)
   const [isError, setIsError] = useState(false)
 
-  // Bank pertanyaan yang berputar / acak
-  const [suggestedQuestions, setSuggestedQuestions] = useState(() => getRandomQuestions(lang, 4))
+  // Bank pertanyaan yang berputar / acak (tampilkan 2 pertanyaan terbaca penuh tanpa scroll horizontal)
+  const [suggestedQuestions, setSuggestedQuestions] = useState(() => getRandomQuestions(lang, 2))
 
   // Perbarui pertanyaan saat bahasa berganti
   useEffect(() => {
-    setSuggestedQuestions(getRandomQuestions(lang, 4))
+    setSuggestedQuestions(getRandomQuestions(lang, 2))
   }, [lang])
 
   /* Inisialisasi pesan dengan greeting bot. */
@@ -57,7 +57,7 @@ export default function ChatbotRoot() {
 
   // Fungsi untuk mengacak pertanyaan ide baru
   const handleRefreshQuestions = useCallback(() => {
-    setSuggestedQuestions((prev) => getRandomQuestions(langRef.current, 4, prev))
+    setSuggestedQuestions((prev) => getRandomQuestions(langRef.current, 2, prev))
   }, [])
 
   const sendMessage = useCallback(async (query) => {
@@ -67,7 +67,7 @@ export default function ChatbotRoot() {
       { id: nextId(), role: 'user', text: query, sourceLabel: null },
     ])
     // Otomatis putar pertanyaan baru saat user mengirim pertanyaan
-    setSuggestedQuestions((prev) => getRandomQuestions(langRef.current, 4, prev))
+    setSuggestedQuestions((prev) => getRandomQuestions(langRef.current, 2, prev))
     setIsThinking(true)
     setIsError(false)
 

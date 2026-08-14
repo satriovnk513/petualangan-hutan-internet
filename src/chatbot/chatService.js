@@ -82,19 +82,14 @@ function detectPromptInjection(queryNorm) {
  * - Label sumber
  */
 function formatLocalAnswer(entries, lang) {
-  // Gabungkan konten jika ada beberapa entri relevan
-  const parts = entries.map((entry) => {
-    const content = lang === 'en' ? entry.contentEn : entry.contentId
-    return content.trim()
-  })
-
-  // Ambil label sumber dari entri dengan skor teratas (entries[0])
+  const topEntry = entries[0]
+  const content = lang === 'en' ? topEntry.contentEn : topEntry.contentId
   const sourceLabel = lang === 'en'
-    ? entries[0].sourceLabelEn
-    : entries[0].sourceLabelId
+    ? topEntry.sourceLabelEn
+    : topEntry.sourceLabelId
 
   return {
-    text: parts.join('\n\n'),
+    text: content.trim(),
     sourceLabel,
     isError: false,
     isFallback: false,
