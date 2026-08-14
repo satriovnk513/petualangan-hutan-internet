@@ -1,8 +1,9 @@
 /* Titik masuk seluruh gaya tampilan. Urutan impor penting:
- * token dulu, baru dasar, tata letak, permainan, dan sertifikat. */
+ * token dulu, baru dasar, tata letak, permainan, sertifikat, lalu chatbot. */
 @import './styles/tokens.css';
 @import './styles/base.css';
 @import './styles/layout.css';
 @import './styles/hero.css';
 @import './styles/game.css';
 @import './styles/certificate.css';
+@import './styles/chatbot.css';

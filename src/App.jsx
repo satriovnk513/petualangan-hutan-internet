@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ChatbotRoot from './components/chatbot/ChatbotRoot'
 import Home from './pages/Home'
 import Intro from './pages/Intro'
 import CharacterSelect from './pages/CharacterSelect'
@@ -64,6 +65,10 @@ export default function App() {
       </main>
 
       <Footer />
+
+      {/* Chatbot pendamping belajar — tersedia di semua halaman */}
+      <ChatbotRoot />
     </div>
   )
 }
+

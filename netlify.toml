@@ -16,6 +16,12 @@
   # Situs disajikan di akar domain, bukan di dalam subfolder.
   VITE_BASE = "/"
 
+# Pengalihan untuk fungsi serverless chatbot Netlify
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
 # Aplikasi memakai HashRouter, jadi semua halaman sebenarnya berada di
 # index.html. Pengalihan ini menjadi pengaman kalau ada yang membuka alamat
 # yang tidak dikenal, dan tetap berguna kalau nanti pindah ke BrowserRouter.
