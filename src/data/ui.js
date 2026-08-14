@@ -367,7 +367,7 @@ export const ui = {
       openLabel: 'Buka Tanya Piko (AI Chatbot)',
       title: 'Tanya Piko (AI Chatbot)',
       greeting:
-        'Halo! Aku Piko. Aku siap membantu menjelaskan cara aman, baik, dan pintar menggunakan internet. Kamu bisa bertanya tentang data pribadi, password, kabar yang belum jelas, gambar atau video AI, pertemanan, dan cara mencari bantuan.',
+        'Halo! Aku Piko 🦉. Aku siap membantu menjelaskan cara aman, baik, dan pintar menggunakan internet ✨. Kamu bisa bertanya tentang data pribadi 🔒, password 🔑, mengecek kabar 🔍, gambar/video AI 🤖, pertemanan 🤝, dan cara mencari bantuan 🛡️.',
       inputPlaceholder: 'Tulis pertanyaanmu…',
       send: 'Kirim',
       close: 'Tutup chatbot',
@@ -747,7 +747,7 @@ export const ui = {
       openLabel: 'Open Ask Piko (AI Chatbot)',
       title: 'Ask Piko (AI Chatbot)',
       greeting:
-        'Hello! I am Piko. I am ready to help explain how to use the internet safely, kindly, and wisely. You can ask about personal data, passwords, unverified news, AI images or videos, being a good friend, and how to seek help.',
+        'Hello! I am Piko 🦉. I am ready to help explain how to use the internet safely, kindly, and wisely ✨. You can ask about personal data 🔒, passwords 🔑, checking news 🔍, AI images/videos 🤖, being a good friend 🤝, and how to seek help 🛡️.',
       inputPlaceholder: 'Type your question…',
       send: 'Send',
       close: 'Close chatbot',
