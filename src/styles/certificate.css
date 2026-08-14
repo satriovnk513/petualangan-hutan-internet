@@ -1,0 +1,277 @@
+/* ===========================================================================
+ * SERTIFIKAT — tampilan layar dan tata letak cetak A4 mendatar
+ * ======================================================================== */
+
+.cert-wrap {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.certificate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 297 / 210; /* A4 mendatar */
+  container-type: inline-size;
+  padding: 3.2cqw;
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(circle at 8% 92%, rgba(159, 217, 189, 0.5), transparent 34%),
+    radial-gradient(circle at 92% 8%, rgba(255, 209, 102, 0.5), transparent 34%),
+    var(--cream-50);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.certificate__frame {
+  position: absolute;
+  inset: 1.6cqw;
+  border: 0.55cqw solid var(--forest-700);
+  border-radius: 1.6cqw;
+  pointer-events: none;
+}
+
+.certificate__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0.6cqw;
+  border: 0.18cqw solid var(--sun-500);
+  border-radius: 1.1cqw;
+}
+
+.certificate__leaf {
+  position: absolute;
+  width: 11cqw;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.certificate__leaf--tl {
+  top: 3.6cqw;
+  left: 3.6cqw;
+}
+.certificate__leaf--br {
+  bottom: 3.6cqw;
+  right: 3.6cqw;
+  transform: rotate(180deg);
+}
+
+.certificate__inner {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  text-align: center;
+  padding: 3cqw 5cqw;
+}
+
+.certificate__title {
+  font-family: var(--font-display);
+  font-size: 3cqw;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--forest-800);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.certificate__subtitle {
+  font-family: var(--font-display);
+  font-size: 1.7cqw;
+  font-weight: 700;
+  color: var(--forest-600);
+  margin-top: 0.5cqw;
+}
+
+.certificate__crest {
+  width: 6.6cqw;
+  margin: 0.8cqw auto 0;
+}
+
+.certificate__given {
+  font-size: 1.7cqw;
+  color: var(--ink-soft);
+  margin: 1.2cqw 0 0.4cqw;
+}
+
+.certificate__name {
+  font-family: var(--font-display);
+  font-size: 4.2cqw;
+  font-weight: 800;
+  color: var(--coral-600);
+  line-height: 1.15;
+  margin: 0;
+  padding-bottom: 0.6cqw;
+  border-bottom: 0.3cqw dashed var(--line-strong);
+  display: inline-block;
+  min-width: 44%;
+  padding-inline: 2cqw;
+  word-break: break-word;
+}
+
+.certificate__body {
+  font-size: 1.75cqw;
+  line-height: 1.55;
+  max-width: 78%;
+  margin: 1.4cqw auto 0;
+  color: var(--ink);
+}
+
+.certificate__badges {
+  display: flex;
+  justify-content: center;
+  gap: 1.6cqw;
+  margin-top: 1.4cqw;
+}
+
+.certificate__badge {
+  display: grid;
+  place-items: center;
+  gap: 0.3cqw;
+  width: 8.4cqw;
+}
+
+.certificate__badge-medal {
+  display: grid;
+  place-items: center;
+  width: 5.4cqw;
+  height: 5.4cqw;
+  border-radius: 50%;
+  font-size: 2.6cqw;
+  background: radial-gradient(circle at 35% 30%, #fff3cd, var(--sun-500));
+  border: 0.3cqw solid var(--cream-50);
+  box-shadow: 0 0.4cqw 0.9cqw rgba(224, 142, 11, 0.35);
+}
+
+.certificate__badge-name {
+  font-size: 1.05cqw;
+  font-weight: 800;
+  color: var(--forest-800);
+  line-height: 1.25;
+}
+
+.certificate__foot {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 2cqw;
+  margin-top: auto;
+}
+
+.certificate__meta {
+  font-size: 1.35cqw;
+  color: var(--ink-soft);
+  text-align: left;
+}
+
+.certificate__meta strong {
+  display: block;
+  color: var(--forest-800);
+  font-size: 1.5cqw;
+}
+
+.certificate__meta--right {
+  text-align: right;
+}
+
+.certificate__cast {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.6cqw;
+  height: 13cqw;
+}
+
+.certificate__cast img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.certificate__cast img:nth-child(2) {
+  height: 82%;
+}
+
+/* --- Kolom isian nama --- */
+.name-field {
+  display: grid;
+  gap: var(--sp-2);
+  max-width: 460px;
+}
+
+.name-field label {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--forest-800);
+}
+
+.name-field input {
+  min-height: var(--tap);
+  padding: var(--sp-3) var(--sp-4);
+  border: 3px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--cream-50);
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.name-field input:focus-visible {
+  border-color: var(--forest-600);
+}
+
+.name-field__hint {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===========================================================================
+ * CETAK
+ * ======================================================================== */
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  body {
+    background: #fff !important;
+    background-image: none !important;
+  }
+
+  body::before,
+  .header,
+  .footer,
+  .no-print,
+  .skip-link {
+    display: none !important;
+  }
+
+  .main {
+    padding: 0 !important;
+  }
+
+  .container {
+    max-width: none;
+    padding: 0;
+  }
+
+  .certificate {
+    width: 100%;
+    aspect-ratio: 297 / 210;
+    border-radius: 0;
+    box-shadow: none;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .cert-wrap {
+    gap: 0;
+  }
+}

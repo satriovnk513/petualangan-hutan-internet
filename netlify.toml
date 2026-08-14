@@ -1,0 +1,43 @@
+# ===========================================================================
+# KONFIGURASI NETLIFY
+# ===========================================================================
+# Netlify menyajikan situs langsung di akar domain, sedangkan GitHub Pages
+# menyajikannya di dalam subfolder bernama repository. Karena itu VITE_BASE
+# di bawah disetel ke "/" supaya alamat berkas gambar dan skrip tetap benar.
+# Berkas ini tidak memengaruhi penerbitan ke GitHub Pages.
+# ===========================================================================
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Situs disajikan di akar domain, bukan di dalam subfolder.
+  VITE_BASE = "/"
+
+# Aplikasi memakai HashRouter, jadi semua halaman sebenarnya berada di
+# index.html. Pengalihan ini menjadi pengaman kalau ada yang membuka alamat
+# yang tidak dikenal, dan tetap berguna kalau nanti pindah ke BrowserRouter.
+# Berkas yang benar-benar ada (gambar, PDF, skrip) tetap disajikan lebih dulu.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Kepala HTTP tambahan. Situs ini tidak memuat apa pun dari luar,
+# sehingga aturannya bisa dibuat ketat.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "no-referrer"
+    # Tidak ada fitur perangkat yang dipakai permainan ini.
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+
+# Berkas hasil build memakai nama unik, jadi aman disimpan lama di peramban.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

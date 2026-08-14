@@ -1,0 +1,1620 @@
+/* ===========================================================================
+ * BAGIAN PERMAINAN: PETA, ADEGAN, PILIHAN, UMPAN BALIK, LENCANA
+ * ======================================================================== */
+
+/* Gerakan lembut yang dipakai ulang di adegan cerita dan balon Piko. */
+@keyframes bob {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fly {
+  33% {
+    transform: translate(-14px, -12px) rotate(-3deg);
+  }
+  66% {
+    transform: translate(10px, 6px) rotate(2deg);
+  }
+}
+
+/* =========================== TOKOH & PIKO ============================== */
+
+.avatar {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, var(--sun-200), var(--leaf-100));
+  border: 3px solid var(--cream-50);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  flex: none;
+}
+
+.avatar img {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+.avatar--sm {
+  width: 48px;
+  height: 48px;
+}
+.avatar--md {
+  width: 72px;
+  height: 72px;
+}
+.avatar--lg {
+  width: 120px;
+  height: 120px;
+}
+
+.guide {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+}
+
+.guide__bird {
+  flex: none;
+  width: 76px;
+  animation: fly 6s ease-in-out infinite;
+}
+
+.guide__bubble {
+  position: relative;
+  flex: 1;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-lg);
+  border-bottom-left-radius: 6px;
+  background: var(--sky-100);
+  border: 2px solid var(--sky-300);
+  color: var(--ink);
+  font-size: var(--text-base);
+}
+
+.guide__bubble p {
+  margin: 0;
+}
+
+.guide__name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  color: var(--sky-700);
+  margin-bottom: 2px;
+}
+
+.guide--warm .guide__bubble {
+  background: var(--sun-200);
+  border-color: var(--sun-500);
+}
+
+.guide--warm .guide__name {
+  color: #6a4d05;
+}
+
+@media (min-width: 640px) {
+  .guide__bird {
+    width: 96px;
+  }
+}
+
+/* =========================== PROGRES =================================== */
+
+.progress {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.progress__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  color: var(--forest-800);
+}
+
+.progress__track {
+  height: 16px;
+  border-radius: var(--r-pill);
+  background: var(--cream-300);
+  border: 2px solid var(--line-strong);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--leaf-500), var(--forest-600));
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progress__fill--sun {
+  background: linear-gradient(90deg, var(--sun-400), var(--sun-600));
+}
+
+/* Deretan harta karun di bilah kemajuan peta */
+.treasure-track {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.treasure-dot {
+  font-size: 1.7rem;
+  line-height: 1;
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+.treasure-dot--on {
+  filter: none;
+  opacity: 1;
+  animation: treasure-glow 3s ease-in-out infinite;
+}
+
+@keyframes treasure-glow {
+  50% {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9));
+  }
+}
+
+/* =========================== PETA PETUALANGAN ========================== */
+
+.map {
+  position: relative;
+  border-radius: var(--r-xl);
+  padding: var(--sp-5) var(--sp-4) var(--sp-6);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(255, 220, 140, 0.5), transparent 45%),
+    linear-gradient(180deg, #eaf7ee, #d9efe0 55%, #cfe8dd);
+  border: 3px solid var(--cream-50);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.map__decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.map__path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map__nodes {
+  position: relative;
+  display: grid;
+  gap: var(--sp-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 900px) {
+  .map__nodes {
+    gap: var(--sp-5);
+  }
+}
+
+/* Simpul level */
+.node {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-4);
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  border: 3px solid var(--cream-50);
+  background: rgba(255, 253, 246, 0.95);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font: inherit;
+  color: inherit;
+}
+
+.node:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.node:disabled {
+  cursor: not-allowed;
+  background: rgba(240, 236, 224, 0.9);
+  box-shadow: none;
+  border-color: var(--cream-200);
+}
+
+.node--locked .node__title,
+.node--locked .node__topic {
+  color: var(--ink-soft);
+}
+
+.node__badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--leaf-100);
+  border: 3px solid var(--forest-600);
+  font-size: 1.9rem;
+  flex: none;
+}
+
+.node--locked .node__badge {
+  background: var(--cream-200);
+  border-color: var(--line-strong);
+  filter: grayscale(0.6);
+}
+
+.node--done .node__badge {
+  background: var(--sun-200);
+  border-color: var(--sun-600);
+}
+
+.node--current .node__badge::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 3px solid var(--coral-500);
+  animation: node-pulse 2s ease-out infinite;
+}
+
+@keyframes node-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+.node__num {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--forest-700);
+  color: var(--ink-invert);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  border: 2px solid var(--cream-50);
+}
+
+.node__body {
+  display: block;
+  min-width: 0;
+}
+
+.node__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--forest-900);
+  margin-bottom: 2px;
+}
+
+.node__topic {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.node__go {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .node__go {
+    display: block;
+  }
+}
+
+.node__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-top: var(--sp-2);
+  padding: 2px var(--sp-3);
+  border-radius: var(--r-pill);
+  font-size: var(--text-xs);
+  font-weight: 800;
+}
+
+.node__status--done {
+  background: var(--safe-bg);
+  color: var(--forest-800);
+}
+
+.node__status--open {
+  background: var(--sun-200);
+  color: #6a4d05;
+}
+
+.node__status--locked {
+  background: var(--cream-200);
+  color: var(--ink-soft);
+}
+
+@media (min-width: 640px) {
+  .node {
+    grid-template-columns: auto 1fr auto;
+  }
+  .node__badge {
+    width: 84px;
+    height: 84px;
+    font-size: 2.2rem;
+  }
+  .node__title {
+    font-size: var(--text-xl);
+  }
+}
+
+/* =========================== ADEGAN CERITA ============================= */
+
+.scene {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 3px solid var(--cream-50);
+  box-shadow: var(--shadow-md);
+  background: var(--leaf-100);
+}
+
+@media (min-width: 900px) {
+  .scene {
+    aspect-ratio: 16 / 7;
+  }
+}
+
+.scene__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scene__figure {
+  position: absolute;
+  bottom: 0;
+  right: 6%;
+  height: 88%;
+  width: auto;
+  max-width: 46%;
+  object-fit: contain;
+  object-position: bottom;
+  filter: drop-shadow(0 8px 10px rgba(15, 61, 43, 0.32));
+  animation: bob 6s ease-in-out infinite;
+}
+
+.scene__label {
+  position: absolute;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-pill);
+  background: rgba(255, 253, 246, 0.94);
+  border: 2px solid var(--line);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  color: var(--forest-800);
+}
+
+/* Kartu cerita */
+.story {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.story__card {
+  background: var(--cream-50);
+  border: 2px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-card);
+}
+
+.story__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+
+.story__title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--sp-3);
+}
+
+.story__text {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: var(--sp-4);
+}
+
+.story__question {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  color: var(--forest-800);
+  margin-bottom: var(--sp-3);
+}
+
+/* =========================== TOMBOL PILIHAN ============================ */
+
+.choices {
+  display: grid;
+  gap: var(--sp-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.choice {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--sp-3) var(--sp-4);
+  border: 3px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--cream-50);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--cream-300);
+  transition: transform 0.12s ease, background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.choice:hover:not(:disabled) {
+  background: var(--sun-200);
+  border-color: var(--sun-500);
+  transform: translateY(-2px);
+}
+
+.choice:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--cream-300);
+}
+
+.choice__key {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--forest-700);
+  color: var(--ink-invert);
+  font-family: var(--font-display);
+  font-weight: 800;
+  flex: none;
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.choice--picked {
+  opacity: 1;
+}
+
+.choice--picked.choice--best {
+  background: var(--safe-bg);
+  border-color: var(--safe);
+}
+
+.choice--picked.choice--partial {
+  background: var(--think-bg);
+  border-color: var(--think);
+}
+
+.choice--picked.choice--unsafe {
+  background: var(--care-bg);
+  border-color: var(--care);
+}
+
+.choice--reveal {
+  border-style: dashed;
+  border-color: var(--safe);
+}
+
+.choice__mark {
+  margin-left: auto;
+  font-size: 1.35rem;
+}
+
+/* ================= MEMASANGKAN & MENYUSUN KARTU ======================== */
+/* Dipakai komponen PlacementActivity untuk dua bentuk scene sekaligus:
+ *   .place--match  memasangkan kalimat kiri dengan tindakan kanan
+ *   .place--sort   menyusun kartu ke kotak kategori
+ *
+ * ATURAN TAMPILAN — jangan dilanggar saat menyunting:
+ *   1. Keadaan kartu TIDAK PERNAH ditandai dengan warna saja. Selalu ada
+ *      ikon (⠿ ✓ !) dan teks ("Dipilih", "Tepat", "Periksa lagi").
+ *   2. Kartu dan kotak tujuan minimal setinggi --tap-lg supaya mudah
+ *      diketuk jari anak, dengan jarak antar kartu yang lega.
+ *   3. Ukuran huruf mengikuti --text-lg agar terbaca lewat proyektor.
+ *   4. Ditulis mobile-first: bawaannya SATU KOLOM. Dua kolom baru dipakai
+ *      kalau layarnya benar-benar lebar (lihat @media di bawah).
+ *   5. `touch-action` kartu tetap `manipulation` supaya halaman selalu bisa
+ *      digulung. Gulir hanya ditahan sementara oleh JavaScript saat sebuah
+ *      kartu benar-benar sedang diseret.
+ * --------------------------------------------------------------------- */
+
+.place {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.place__prompt {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  color: var(--forest-800);
+  margin: 0;
+}
+
+.place__hint {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+  margin: 0;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--sky-100);
+  border: 2px dashed var(--sky-500);
+  font-size: var(--text-base);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* --- Tempat kartu yang belum diletakkan --- */
+.place__tray {
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+  border: 3px dashed var(--line-strong);
+  background: var(--cream-100);
+}
+
+.place__tray--over {
+  border-color: var(--forest-600);
+  background: var(--leaf-100);
+}
+
+.place__tray-head {
+  margin-bottom: var(--sp-2);
+}
+
+.place__tray-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3);
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 800;
+  color: var(--forest-800);
+  cursor: pointer;
+  text-align: left;
+}
+
+.place__tray-btn:hover {
+  border-color: var(--line-strong);
+  background: var(--cream-50);
+}
+
+.place__tray-icon {
+  font-size: 1.2rem;
+}
+
+.place__cards {
+  display: grid;
+  /* Jarak antar kartu dibuat lega supaya jari tidak mudah salah ketuk. */
+  gap: var(--sp-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.place__empty,
+.place__slot-empty {
+  margin: 0;
+  padding: var(--sp-3);
+  font-size: var(--text-base);
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.place__slot-empty {
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--r-md);
+  background: rgba(255, 253, 246, 0.6);
+}
+
+/* --- Kartu --- */
+.place-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: var(--tap-lg);
+  padding: var(--sp-3);
+  border: 3px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--cream-50);
+  box-shadow: 0 4px 0 var(--cream-300);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+  /* Halaman tetap bisa digulung dengan jari di atas kartu. Penahanan gulir
+   * saat menyeret diatur JavaScript, hanya selama seretan berlangsung. */
+  touch-action: manipulation;
+  /* Menahan kaca pembesar dan blok teks biru saat kartu ditahan lama. */
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition: transform 0.12s ease, background-color 0.12s ease, border-color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.place-card:hover:not(:disabled) {
+  background: var(--sun-200);
+  border-color: var(--sun-500);
+}
+
+.place-card__grip {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--forest-700);
+  color: var(--ink-invert);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  flex: none;
+}
+
+.place-card__label {
+  min-width: 0;
+  /* Teks panjang boleh turun beberapa baris; tidak boleh melebar keluar. */
+  overflow-wrap: anywhere;
+}
+
+.place-card__state {
+  grid-column: 2;
+  justify-self: start;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-pill);
+  border: 2px solid currentColor;
+  background: var(--cream-50);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Kartu yang sedang dipilih: kuning, ikon ✓, dan teks "Dipilih". */
+.place-card--selected {
+  background: var(--sun-200);
+  border-color: var(--sun-600);
+  box-shadow: 0 0 0 4px var(--sun-200), 0 4px 0 var(--cream-300);
+}
+
+.place-card--selected .place-card__grip {
+  background: var(--sun-600);
+  color: var(--ink);
+}
+
+/* Sudah tepat: hijau, ikon ✓, teks "Tepat". */
+.place-card--ok {
+  background: var(--safe-bg);
+  border-color: var(--safe);
+  color: var(--forest-900);
+}
+
+.place-card--ok .place-card__grip {
+  background: var(--safe);
+}
+
+/* Perlu diperiksa lagi: jingga, ikon !, teks "Periksa lagi". */
+.place-card--check {
+  background: var(--think-bg);
+  border-color: var(--think);
+}
+
+.place-card--check .place-card__grip {
+  background: var(--think);
+  color: var(--ink);
+}
+
+.place-card--dragging {
+  position: relative;
+  z-index: 30;
+  cursor: grabbing;
+  box-shadow: var(--shadow-lg);
+  /* Saat mengikuti jari atau tetikus, gerakannya tidak boleh diperhalus. */
+  transition: none;
+  /* Selama diseret barulah gulir ditahan. */
+  touch-action: none;
+}
+
+.place-card:disabled {
+  cursor: default;
+}
+
+/* --- Kotak tujuan --- */
+.place__targets {
+  display: grid;
+  /* Mobile-first: selalu satu kolom supaya kotaknya lebar dan mudah diketuk. */
+  gap: var(--sp-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dua kolom hanya kalau ruangnya benar-benar cukup (tablet mendatar ke atas).
+ * Tablet tegak (768px) sengaja tetap satu kolom. */
+@media (min-width: 900px) {
+  .place__targets--sort {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.place__target {
+  display: grid;
+  gap: var(--sp-2);
+  height: 100%;
+  padding: var(--sp-3);
+  border: 3px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--cream-50);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.12s ease, background-color 0.12s ease;
+}
+
+/* Ada kartu yang sedang dipilih: semua tempat tujuan ikut menyala
+ * supaya anak langsung tahu ke mana kartunya bisa diketuk. */
+.place__target--ready {
+  border-style: dashed;
+  border-color: var(--forest-600);
+  background: var(--leaf-100);
+}
+
+.place__target--over {
+  border-style: solid;
+  border-color: var(--forest-700);
+  background: var(--leaf-100);
+}
+
+.place__target-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: var(--tap-lg);
+  padding: var(--sp-2);
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: left;
+  color: var(--forest-900);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.place__target-head:hover {
+  background: var(--cream-100);
+  border-color: var(--line-strong);
+}
+
+.place__target-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  background: var(--sun-200);
+  border: 2px solid var(--sun-500);
+  font-size: 1.35rem;
+  flex: none;
+}
+
+/* Ajakan "Letakkan di sini", hanya muncul saat ada kartu terpilih. */
+.place__target-cue {
+  margin-left: auto;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--forest-700);
+  color: var(--ink-invert);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.place__status {
+  margin: 0;
+  min-height: 1.6em;
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--forest-800);
+}
+
+.place__note {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+/* Layar sangat sempit (320px): rapatkan sedikit tanpa mengecilkan sentuhan. */
+@media (max-width: 360px) {
+  .place-card,
+  .place__target {
+    padding: var(--sp-2);
+  }
+
+  .place-card {
+    gap: var(--sp-2);
+  }
+
+  .place-card__grip {
+    width: 34px;
+    height: 34px;
+  }
+
+  .place__target-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Ajakan "Letakkan di sini" turun ke baris sendiri supaya nama kategori
+   * tidak terpotong. */
+  .place__target-cue {
+    margin-left: 0;
+  }
+}
+
+/* =========================== UMPAN BALIK =============================== */
+
+.feedback {
+  border-radius: var(--r-xl);
+  border: 3px solid var(--safe);
+  background: var(--safe-bg);
+  padding: var(--sp-5);
+  animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.feedback--partial,
+/* 'fixed' = anak memperbaiki sendiri sampai tepat pada scene memasangkan
+ * atau drag-and-drop. Warnanya sama hangatnya dengan 'partial'. */
+.feedback--fixed {
+  border-color: var(--think);
+  background: var(--think-bg);
+}
+
+.feedback--unsafe {
+  border-color: var(--care);
+  background: var(--care-bg);
+}
+
+.feedback__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.feedback__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--cream-50);
+  font-size: 1.6rem;
+  flex: none;
+  border: 2px solid currentColor;
+}
+
+.feedback__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 800;
+  margin: 0;
+  color: var(--forest-900);
+}
+
+.feedback__points {
+  margin-left: auto;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--cream-50);
+  border: 2px solid currentColor;
+  font-weight: 800;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.feedback__body {
+  font-size: var(--text-lg);
+  margin-bottom: var(--sp-4);
+}
+
+.feedback__explain {
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: rgba(255, 253, 246, 0.85);
+  margin-bottom: var(--sp-4);
+}
+
+.feedback__explain p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tip dari Piko */
+.tip {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-3);
+  align-items: center;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--forest-800);
+  color: #eaf7ee;
+  box-shadow: var(--shadow-md);
+}
+
+.tip__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-md);
+  background: var(--sun-400);
+  font-size: 1.5rem;
+  flex: none;
+  overflow: hidden;
+}
+
+.tip__icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.tip__label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sun-400);
+}
+
+.tip__text {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+/* ====================== LENCANA & HARTA KARUN ========================== */
+
+.badge-card {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--cream-50);
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.badge-card--locked {
+  background: var(--cream-200);
+  opacity: 0.75;
+}
+
+.badge-card__medal {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  font-size: 2.2rem;
+  background: radial-gradient(circle at 35% 30%, var(--sun-200), var(--sun-500));
+  border: 4px solid var(--cream-50);
+  box-shadow: 0 6px 14px rgba(224, 142, 11, 0.35);
+}
+
+.badge-card--locked .badge-card__medal {
+  background: var(--cream-300);
+  box-shadow: none;
+  filter: grayscale(1);
+}
+
+.badge-card__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-base);
+  color: var(--forest-900);
+}
+
+.badge-card__desc {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.treasure-card {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--cream-50);
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.treasure-card--locked {
+  background: var(--cream-200);
+  opacity: 0.75;
+}
+
+.treasure-card__medal {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  font-size: 2.4rem;
+  line-height: 1;
+  background: radial-gradient(circle at 35% 30%, #fffdf6, var(--sun-200));
+  border: 4px solid var(--sun-500);
+  box-shadow: 0 6px 14px rgba(224, 142, 11, 0.25);
+}
+
+.treasure-card--locked .treasure-card__medal {
+  background: var(--cream-300);
+  border-color: var(--line-strong);
+  box-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.treasure-card__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--forest-900);
+  overflow-wrap: anywhere;
+}
+
+.treasure-card__desc {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* =========================== PERAYAAN ================================== */
+
+.celebrate {
+  position: relative;
+  text-align: center;
+  padding: var(--sp-6) var(--sp-4);
+  border-radius: var(--r-xl);
+  background: radial-gradient(circle at 50% 0%, var(--sun-200), var(--cream-50) 62%);
+  border: 3px solid var(--sun-500);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.celebrate h2 {
+  font-size: var(--text-3xl);
+}
+
+.celebrate p {
+  margin-inline: auto;
+}
+
+.celebrate__medal {
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto var(--sp-4);
+  border-radius: 50%;
+  font-size: 3.6rem;
+  background: radial-gradient(circle at 35% 28%, #fff3cd, var(--sun-500));
+  border: 6px solid var(--cream-50);
+  box-shadow: 0 10px 26px rgba(224, 142, 11, 0.4);
+  animation: pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.3) rotate(-12deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti i {
+  position: absolute;
+  top: -12px;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* =========================== SKOR AKHIR ================================ */
+
+.score-ring {
+  display: grid;
+  place-items: center;
+  width: 168px;
+  height: 168px;
+  margin-inline: auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--forest-600) calc(var(--pct) * 1%),
+    var(--cream-300) 0
+  );
+  position: relative;
+}
+
+.score-ring::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: var(--cream-50);
+  border: 2px solid var(--line);
+}
+
+.score-ring__value {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-family: var(--font-display);
+}
+
+.score-ring__num {
+  display: block;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--forest-800);
+}
+
+.score-ring__label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.stat-row {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .stat-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.stat {
+  text-align: center;
+  padding: var(--sp-4) var(--sp-3);
+  border-radius: var(--r-lg);
+  background: var(--cream-50);
+  border: 2px solid var(--line);
+}
+
+.stat__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--forest-800);
+  line-height: 1.1;
+}
+
+.stat__label {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+/* =========================== PILIH TOKOH =============================== */
+
+.picker {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+@media (min-width: 640px) {
+  .picker {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.picker__option {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-5) var(--sp-4);
+  border-radius: var(--r-xl);
+  border: 3px solid var(--line-strong);
+  background: var(--cream-50);
+  cursor: pointer;
+  box-shadow: 0 6px 0 var(--cream-300);
+  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.picker__option:hover {
+  transform: translateY(-4px);
+  border-color: var(--forest-600);
+  background: var(--leaf-100);
+}
+
+.picker__option[aria-pressed='true'] {
+  border-color: var(--forest-700);
+  background: var(--leaf-100);
+  box-shadow: 0 6px 0 var(--forest-600);
+}
+
+.picker__img {
+  width: 140px;
+  height: 190px;
+  object-fit: contain;
+  object-position: bottom;
+  filter: drop-shadow(0 8px 8px rgba(15, 61, 43, 0.2));
+}
+
+.picker__name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--forest-900);
+}
+
+.picker__trait {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 26ch;
+}
+
+.picker__check {
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: var(--forest-700);
+  font-size: var(--text-sm);
+}
+
+/* =========================== MODAL ===================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-4);
+  background: rgba(15, 61, 43, 0.55);
+  backdrop-filter: blur(3px);
+  animation: fade 0.18s ease-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.modal {
+  width: min(520px, 100%);
+  max-height: 88dvh;
+  overflow-y: auto;
+  padding: var(--sp-5);
+  border-radius: var(--r-xl);
+  background: var(--cream-50);
+  border: 3px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+  animation: rise 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal h2 {
+  margin-bottom: var(--sp-3);
+}
+
+/* =========================== PENGALIH SUARA ============================ */
+
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 var(--sp-3);
+  border: 2px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--cream-50);
+  font-weight: 800;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sound-toggle[aria-pressed='true'] {
+  background: var(--leaf-100);
+  border-color: var(--forest-600);
+  color: var(--forest-800);
+}
+
+.sound-toggle__text {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .sound-toggle__text {
+    display: inline;
+  }
+}
+
+/* =========================== KARTU UNDUHAN ============================= */
+
+.download {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-4);
+  align-items: center;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  border: 2px dashed var(--line-strong);
+  background: var(--cream-50);
+}
+
+.download__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-md);
+  background: var(--sun-200);
+  font-size: 1.75rem;
+  flex: none;
+}
+
+.download__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--forest-900);
+}
+
+.download__note {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0 0 var(--sp-3);
+}
+
+/* =========================== BILAH BAWAH PONSEL ======================== */
+
+.action-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  margin-top: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  padding-bottom: max(var(--sp-3), env(safe-area-inset-bottom));
+  background: rgba(255, 253, 246, 0.96);
+  backdrop-filter: blur(8px);
+  border-top: 2px solid var(--line);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+
+@media (min-width: 900px) {
+  .action-bar {
+    position: static;
+    background: transparent;
+    border: 0;
+    backdrop-filter: none;
+    padding-inline: 0;
+  }
+}
+
+/* =========================== PEMBUKA LEVEL ============================== */
+/* Kartu pembuka level punya SATU aturan hierarki: hanya dua elemen yang
+ * boleh terlihat bisa ditekan, yaitu tombol utama dan tombol kembali.
+ *
+ * Sebelumnya keterangan Lencana dan Harta Karun memakai .notice — kotak
+ * besar bergaris tebal — dan berdiri tepat di atas kedua tombol dalam kisi
+ * dua kolom yang sama, sehingga layar terbaca seolah berisi empat tombol.
+ * Sekarang keterangannya naik ke area informasi di atas judul dan dibuat
+ * rendah, datar, dan kalem.
+ *
+ * .notice sendiri TIDAK diubah karena masih dipakai delapan halaman lain. */
+
+.level-intro__title {
+  margin-top: var(--sp-5);
+}
+
+.level-intro__story {
+  font-size: var(--text-lg);
+  line-height: 1.75;
+}
+
+.level-intro__status {
+  margin-bottom: 0;
+  font-weight: 700;
+  color: var(--forest-800);
+}
+
+/* --- Keterangan hadiah: informasi, bukan aksi -------------------------- */
+/* Sengaja TIDAK punya bayangan, tepi tebal, efek timbul, keadaan hover /
+ * active / focus, maupun tanda panah. Kalau nanti perlu perubahan,
+ * pertahankan sifatnya sebagai keterangan: jangan sampai menyerupai tombol. */
+.reward-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: var(--sp-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reward-fact {
+  display: flex;
+  flex: 1 1 16rem;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--line);
+  /* Sudut paling kecil yang tersedia. Tombol di aplikasi ini semuanya
+   * berbentuk pil, jadi sudut yang tegas ikut menegaskan bahwa ini
+   * keterangan, bukan tombol. */
+  border-radius: var(--r-sm);
+  background: var(--cream-100);
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  cursor: default;
+}
+
+.reward-fact__icon {
+  flex: none;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.reward-fact__text {
+  min-width: 0;
+}
+
+.reward-fact__label {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.reward-fact__value {
+  color: var(--ink);
+}
+
+/* --- Area tombol -------------------------------------------------------- */
+/* Garis tipis dan jarak lega memisahkannya dari isi kartu, jadi kedua tombol
+ * terbaca sebagai satu-satunya tindakan yang tersedia. */
+.level-intro__actions {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
+}
+
+/* Ponsel: keterangan hadiah menumpuk rapat di atas, tombol menumpuk di
+ * bawah dengan tombol utama lebih dulu. */
+@media (max-width: 599px) {
+  .reward-fact {
+    flex-basis: 100%;
+  }
+  .level-intro__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .level-intro__actions .btn {
+    width: 100%;
+  }
+}

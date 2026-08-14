@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lambang Hutan Internet">
+  <rect width="64" height="64" rx="14" fill="#1c6b4a" />
+  <path d="M32 10 L46 26 L32 54 L18 26 Z" fill="#ffd166" />
+  <path d="M32 10 L46 26 L32 30 Z" fill="#fff1c9" />
+  <path d="M32 10 L18 26 L32 30 Z" fill="#f4b942" />
+  <path d="M18 26 L32 30 L32 54 Z" fill="#f0a830" />
+</svg>

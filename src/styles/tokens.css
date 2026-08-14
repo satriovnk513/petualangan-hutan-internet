@@ -1,0 +1,126 @@
+/* ===========================================================================
+ * PALET & TOKEN DESAIN
+ * ===========================================================================
+ * Warna terinspirasi hutan tropis Indonesia: hijau daun, kuning matahari,
+ * biru sungai, cokelat tanah, krem kertas, dan aksen koral.
+ * Semua pasangan warna teks/latar sudah dicek agar kontrasnya cukup.
+ * ======================================================================== */
+
+:root {
+  /* --- Warna dasar --- */
+  --forest-900: #0f3d2b;
+  --forest-800: #14523a;
+  --forest-700: #1c6b4a;
+  --forest-600: #2f9e6f;
+  --leaf-500: #52b788;
+  --leaf-300: #9fd9bd;
+  --leaf-100: #dff2e8;
+
+  --sun-600: #e08e0b;
+  --sun-500: #f4b942;
+  --sun-400: #ffd166;
+  --sun-200: #ffe9b0;
+
+  --sky-700: #1f6f9c;
+  --sky-500: #4aa3df;
+  --sky-300: #a8d5f2;
+  --sky-100: #e3f1fb;
+
+  --river-700: #17607a;
+  --river-500: #2a92b3;
+
+  --earth-800: #5b3a26;
+  --earth-600: #8a5a3b;
+  --earth-400: #c39270;
+  --earth-200: #e8d3c0;
+
+  --cream-50: #fffdf6;
+  --cream-100: #fdf6e6;
+  --cream-200: #f6ead3;
+  --cream-300: #ecdcc0;
+
+  --coral-600: #d95f3b;
+  --coral-500: #ef8354;
+  --coral-200: #fbd9cb;
+
+  --violet-500: #8b6cd8;
+  --violet-200: #ddd2f5;
+
+  /* --- Peran warna --- */
+  --bg: var(--cream-100);
+  --bg-panel: var(--cream-50);
+  --ink: #23301f;          /* teks utama, kontras > 12:1 di atas krem */
+  --ink-soft: #4d5a49;     /* teks pendukung, kontras > 6:1 */
+  --ink-invert: #fffdf6;
+  --line: #e2d5bb;
+  --line-strong: #cbb894;
+
+  --brand: var(--forest-700);
+  --brand-strong: var(--forest-800);
+  --accent: var(--sun-500);
+  --accent-strong: var(--sun-600);
+
+  --safe: var(--forest-600);
+  --safe-bg: var(--leaf-100);
+  --think: var(--sun-600);
+  --think-bg: var(--sun-200);
+  --care: var(--coral-600);
+  --care-bg: var(--coral-200);
+
+  /* --- Bentuk & bayangan --- */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(35, 48, 31, 0.08);
+  --shadow-md: 0 6px 18px rgba(35, 48, 31, 0.12);
+  --shadow-lg: 0 16px 40px rgba(35, 48, 31, 0.16);
+  --shadow-card: 0 10px 0 rgba(0, 0, 0, 0.06), 0 14px 30px rgba(35, 48, 31, 0.14);
+
+  /* --- Huruf --- */
+  --font-body: 'Nunito', ui-rounded, 'SF Pro Rounded', 'Segoe UI', system-ui, -apple-system,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Baloo 2', 'Nunito', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.125rem;
+  --text-4xl: 2.75rem;
+
+  /* --- Jarak --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+
+  --page-max: 1120px;
+  --read-max: 68ch;
+
+  /* Ukuran sentuh minimal supaya nyaman untuk jari anak. */
+  --tap: 48px;
+  /* Ukuran sentuh untuk kartu dan kotak yang sering diketuk anak SD di
+   * layar ponsel. Sengaja lebih besar dari batas minimal 48px. */
+  --tap-lg: 60px;
+}
+
+/* Layar besar / proyektor: perbesar teks agar terbaca dari belakang kelas. */
+@media (min-width: 1440px) {
+  :root {
+    --text-base: 1.1875rem;
+    --text-lg: 1.3125rem;
+    --text-xl: 1.5rem;
+    --text-2xl: 2rem;
+    --text-3xl: 2.5rem;
+    --text-4xl: 3.25rem;
+  }
+}

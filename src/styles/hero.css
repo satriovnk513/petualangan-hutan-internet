@@ -1,0 +1,618 @@
+/* ===========================================================================
+ * HERO BERANDA — TIGA GUBAHAN, SATU STRUKTUR
+ * ===========================================================================
+ * Satu struktur DOM untuk semua perangkat; yang berganti hanya berkas latar
+ * dan aturan tata letaknya. Jangan menggandakan markup hero per perangkat.
+ *
+ * Susunan lapisan (dari belakang ke depan):
+ *   1. .hero__picture — <picture>; memilih SATU dari tiga berkas hutan
+ *      .hero__forest  — gambarnya, `cover` dengan titik potong per breakpoint
+ *   2. .hero__veil    — gradasi krem setempat, HANYA di belakang teks
+ *   3. .hero__copy    — lencana, judul, kalimat pendukung, tombol, "Gratis"
+ *   4. .hero__cast    — Arif, Safira, Netty sebagai tiga gambar terpisah
+ *
+ * PEMBAGIAN BREAKPOINT (harus sama dengan <source media> di Hero.jsx):
+ *   sampai 767px  -> forest-mobile.png    941x1672  tegak 9:16
+ *   768 - 1023px  -> forest-tablet.png   1086x1448  tegak 3:4
+ *   mulai 1024px  -> forest-desktop.png  1672x941   mendatar 16:9
+ *
+ * ATURAN GAMBAR: jangan pernah menempelkan filter warna, blur,
+ * mix-blend-mode, cermin, atau efek lain pada .hero__forest maupun pada
+ * .hero__arif / .hero__safira / .hero__piko. Kalau kontras teks kurang,
+ * ubah .hero__veil — bukan gambarnya. .hero__veil harus tetap setempat:
+ * pekat hanya di belakang teks dan habis sebelum menutupi hutannya.
+ *
+ * TENTANG UKURAN TOKOH
+ * --kid mengatur lebar kotak gambar Arif dan Safira. Kotaknya persegi
+ * 800x800 dan berisi ruang kosong: sosok Arif menempati 22,5%-83,3% lebar
+ * dan berhenti di 94,8% tinggi, sedangkan Safira 20,3%-78,9% dan berhenti
+ * di 89,9%. Karena itu Safira diberi margin bawah negatif tipis supaya
+ * kakinya sejajar dengan kaki Arif, dan Arif diberi margin kanan negatif
+ * supaya keduanya berdiri berdekatan, bukan terpisah jauh oleh ruang kosong.
+ * ======================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    'copy'
+    'cast';
+  justify-items: center;
+  align-items: start;
+  gap: clamp(0.75rem, 2.2vh, 1.4rem);
+  /* svh menghitung tinggi layar tanpa bilah alamat yang bisa muncul-hilang,
+   * jadi tombol dan tokoh tidak pernah terpotong di peramban ponsel.
+   * --header-h diumumkan dari src/styles/layout.css. */
+  min-height: calc(100svh - var(--header-h, 70px));
+  padding: calc(clamp(1rem, 3.5vw, 2rem) + env(safe-area-inset-top) * 0)
+    max(1rem, env(safe-area-inset-right))
+    max(1.25rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+  background: var(--cream-50);
+  --kid: clamp(142px, 37vw, 196px);
+}
+
+/* --- 1. Latar hutan ----------------------------------------------------- */
+.hero__picture {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+}
+
+/* PONSEL — forest-mobile.png (941x1672).
+ * Tinggi hero selalu lebih ramping daripada 9:16, jadi `cover` menskala
+ * berdasarkan tinggi dan hanya memangkas sedikit di kiri-kanan. Titik
+ * potong dipusatkan supaya kedua pohon pembingkai tetap utuh. */
+.hero__forest {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 100%;
+  transform: translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px), 0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- 2. Gradasi setempat di belakang teks ------------------------------- */
+/* Ponsel: hanya bagian atas yang diberi kabut krem tipis, dan sudah bening
+ * sebelum mencapai tajuk pohon. Bagian bawah gambar dibiarkan apa adanya. */
+.hero__veil {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: 62%;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 253, 246, 0.66) 0%,
+    rgba(255, 253, 246, 0.48) 36%,
+    rgba(255, 253, 246, 0.18) 64%,
+    rgba(255, 253, 246, 0) 100%
+  );
+}
+
+/* --- 3. Blok teks ------------------------------------------------------- */
+.hero__copy {
+  grid-area: copy;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.55rem, 1.6vh, 0.95rem);
+  width: min(100%, 34rem);
+  text-align: center;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--r-pill);
+  background: rgba(255, 253, 246, 0.92);
+  box-shadow: inset 0 0 0 2px var(--cream-300);
+  color: var(--forest-800);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(0.72rem, 2.7vw, 0.9rem);
+  line-height: 1.25;
+}
+
+.hero__title {
+  margin: 0;
+  font-size: clamp(1.95rem, 8.2vw, 2.55rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--forest-900);
+}
+
+/* Tiap baris judul adalah blok sendiri, jadi patahannya tetap dan tidak
+ * bergantung pada lebar layar. */
+.hero__title-line {
+  display: block;
+}
+
+.hero__title em {
+  font-style: normal;
+  color: var(--coral-600);
+}
+
+.hero__lead {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(0.98rem, 3.5vw, 1.1rem);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* --- Tombol ------------------------------------------------------------- */
+/* Ponsel: bertumpuk dan nyaris selebar layar, dengan margin samping aman. */
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.2rem;
+}
+
+.hero__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 48px;
+  padding: 0.75rem clamp(1.25rem, 4vw, 2.25rem);
+  border-radius: var(--r-pill);
+  background: var(--sun-500);
+  color: #3a2a05;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1rem, 3.4vw, 1.15rem);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 0 var(--sun-600);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hero__cta:hover {
+  background: var(--sun-400);
+  color: #3a2a05;
+  transform: translateY(-2px);
+}
+
+.hero__cta:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--sun-600);
+}
+
+.hero__cta:focus-visible {
+  outline: 4px solid var(--forest-800);
+  outline-offset: 3px;
+}
+
+/* Tombol kedua: sama besar dan sama mudah disentuh, tetapi jelas sekunder. */
+.hero__cta--ghost {
+  background: var(--cream-50);
+  color: var(--forest-900);
+  box-shadow: 0 4px 0 var(--cream-300);
+}
+
+.hero__cta--ghost:hover {
+  background: #fff;
+  color: var(--forest-900);
+}
+
+.hero__cta--ghost:active {
+  box-shadow: 0 2px 0 var(--cream-300);
+}
+
+/* --- 4. Tiga tokoh ------------------------------------------------------ */
+.hero__cast {
+  grid-area: cast;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  transform: translate3d(calc(var(--px, 0) * 14px), calc(var(--py, 0) * 8px), 0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Grup hanya setinggi anak-anak, sehingga Netty selalu bisa dipatok
+ * tepat di atas kepala mereka di semua ukuran layar. */
+.hero__group {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: min(100%, 560px);
+  height: 100%;
+  min-height: calc(var(--kid) * 1.35);
+}
+
+/* max-height + object-fit membuat tokoh mengecil sendiri kalau ruang
+ * tegaknya sempit, jadi kepala dan kakinya tidak pernah terpotong. */
+.hero__arif,
+.hero__safira {
+  width: var(--kid);
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  flex: none;
+}
+
+/* Merapatkan kedua tokoh: kotak gambarnya berisi ruang kosong lebar, jadi
+ * tanpa ini mereka terlihat berdiri berjauhan. */
+.hero__arif {
+  margin-right: calc(var(--kid) * -0.18);
+}
+
+/* Sosok Safira berhenti 4,9% lebih tinggi daripada Arif di dalam kotaknya;
+ * pergeseran ini membuat kaki keduanya menapak di garis yang sama. */
+.hero__safira {
+  margin-bottom: calc(var(--kid) * -0.049);
+}
+
+/* Netty melayang tepat di atas kepala mereka. Jaraknya dihitung dari --kid
+ * (gambar tokohnya persegi, jadi tinggi = lebar), bukan dari persen tinggi
+ * grup — grup setinggi kolomnya, sehingga persen akan membuat Netty
+ * melayang sendirian jauh di atas anak-anak.
+ *
+ * Pemusatan memakai properti `translate`, BUKAN `transform`, supaya animasi
+ * mengapung (yang memakai `transform`) tidak menimpanya. */
+.hero__piko {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: calc(var(--kid) * 0.82);
+  translate: -50% 0;
+  width: calc(var(--kid) * 0.72);
+  height: auto;
+}
+
+/* =========================================================================
+ * PONSEL PENDEK — layar kecil atau tinggi terbatas
+ * Semuanya dirapatkan supaya isinya tetap muat tanpa memampatkan tokoh.
+ * ====================================================================== */
+@media (max-width: 767px) and (max-height: 730px) {
+  .hero {
+    gap: 0.5rem;
+    --kid: clamp(112px, 30vw, 148px);
+  }
+  .hero__copy {
+    gap: 0.45rem;
+  }
+  .hero__title {
+    font-size: clamp(1.6rem, 7.4vw, 2rem);
+  }
+  .hero__lead {
+    font-size: 0.94rem;
+  }
+  .hero__cta {
+    min-height: 46px;
+  }
+}
+
+/* =========================================================================
+ * PONSEL MENDATAR — tinggi sangat sempit
+ * Hero tidak lagi dipaksa setinggi layar; teks dan tokoh berdampingan.
+ * ====================================================================== */
+@media (max-width: 1023px) and (max-height: 520px) and (orientation: landscape) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+    grid-template-areas: 'copy cast';
+    align-items: center;
+    min-height: 0;
+    --kid: clamp(112px, 18vw, 168px);
+  }
+  .hero__copy {
+    align-items: flex-start;
+    gap: 0.4rem;
+    text-align: left;
+  }
+  .hero__title {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+  }
+  .hero__lead {
+    font-size: 0.94rem;
+  }
+  .hero__actions {
+    flex-direction: row;
+    width: auto;
+  }
+  .hero__cta {
+    min-height: 46px;
+    padding-inline: 1.1rem;
+    font-size: 0.98rem;
+  }
+  /* Ruang tegaknya sempit, jadi kabut menegak akan menyaput hampir seluruh
+   * ilustrasi. Dipakai gradasi menyamping seperti di desktop. */
+  .hero__veil {
+    inset: 0;
+    height: auto;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 253, 246, 0.9) 0%,
+      rgba(255, 253, 246, 0.72) 34%,
+      rgba(255, 253, 246, 0.28) 50%,
+      rgba(255, 253, 246, 0) 64%
+    );
+  }
+}
+
+/* =========================================================================
+ * TABLET DAN IPAD TEGAK — 768px sampai 1023px
+ * Latar: forest-tablet.png (1086x1448, tegak 3:4).
+ * Teks di bagian atas dan rata tengah; tokoh berkelompok di bagian bawah,
+ * dibingkai pohon kiri-kanan dan berdiri di tanah lapang tengah.
+ * ====================================================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero {
+    gap: clamp(1rem, 2.6vh, 2rem);
+    padding-inline: clamp(1.5rem, 4.5vw, 3rem);
+    --kid: clamp(205px, 30vw, 290px);
+  }
+
+  /* Gambar tablet sedikit lebih tegak daripada kotak hero, jadi potongannya
+   * menegak. Ditambatkan ke bawah supaya tanah lapang tetap penuh. */
+  .hero__forest {
+    object-position: 50% 100%;
+  }
+
+  .hero__veil {
+    height: 52%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 253, 246, 0.8) 0%,
+      rgba(255, 253, 246, 0.55) 40%,
+      rgba(255, 253, 246, 0.2) 70%,
+      rgba(255, 253, 246, 0) 100%
+    );
+  }
+
+  /* Pada iPad yang lebih jangkung, blok teks diturunkan sedikit supaya
+   * jarak antara keterangan "Gratis" dan kelompok tokoh tidak menganga. */
+  .hero__copy {
+    width: min(100%, 40rem);
+    margin-top: clamp(0.5rem, 6vh, 4.5rem);
+    gap: clamp(0.75rem, 1.5vh, 1.1rem);
+  }
+
+  .hero__eyebrow {
+    font-size: 0.95rem;
+  }
+
+  .hero__title {
+    font-size: clamp(2.6rem, 5.6vw, 3.35rem);
+  }
+
+  .hero__lead {
+    max-width: 40ch;
+    font-size: clamp(1.08rem, 2.1vw, 1.25rem);
+  }
+
+  /* Lebar tablet cukup untuk kedua tombol berdampingan. */
+  .hero__actions {
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+    gap: 0.85rem;
+    margin-top: 0.35rem;
+  }
+
+  .hero__cta {
+    min-height: 56px;
+    padding-inline: clamp(1.5rem, 3.2vw, 2.25rem);
+    font-size: 1.12rem;
+  }
+
+  .hero__group {
+    width: min(90%, 560px);
+  }
+}
+
+/* Cadangan: kalau label kedua tombol berdampingan sudah tidak muat dalam
+ * satu baris kolom teks, keduanya ditumpuk supaya tidak ada teks yang
+ * terpotong. `white-space: nowrap` pada .hero__cta menjaga tiap label tetap
+ * satu baris, dan flex-wrap membuat tombol kedua turun sendiri kalau perlu. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero__actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================================
+ * DESKTOP DAN LAPTOP — mulai 1024px
+ * Latar: forest-desktop.png (1672x941, mendatar 16:9).
+ * Teks di kolom kiri (~52%), tokoh di kolom kanan (~48%) dan menapak di
+ * tanah lapang bawah. Keduanya tidak pernah bertumpang tindih.
+ * ====================================================================== */
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 52fr) minmax(0, 48fr);
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: 'copy cast';
+    justify-items: start;
+    align-items: center;
+    column-gap: clamp(1rem, 2.5vw, 2.5rem);
+    row-gap: 0;
+    min-height: min(calc(100svh - var(--header-h, 70px)), 780px);
+    padding: clamp(1.5rem, 3.2vw, 3.5rem)
+      max(2.5rem, calc((100vw - var(--page-max)) / 2 + 1rem));
+    --kid: clamp(200px, 17vw, 290px);
+  }
+
+  /* Hero di sini selalu mendatar, jadi potongannya kecil. Ditambatkan ke
+   * bawah supaya tanah lapang dan akar tetap terlihat penuh. */
+  .hero__forest {
+    object-position: 50% 100%;
+  }
+
+  /* Kabut berbentuk lonjong yang dipusatkan tepat di belakang blok teks,
+   * bukan sapuan dari tepi kiri. Bentuk ini menjaga pohon di tepi kiri
+   * tetap pekat warnanya, dan sudah bening jauh sebelum kolom tokoh. */
+  .hero__veil {
+    inset: 0;
+    height: auto;
+    background: radial-gradient(
+      64% 58% at 25% 50%,
+      rgba(255, 253, 246, 0.74) 0%,
+      rgba(255, 253, 246, 0.58) 44%,
+      rgba(255, 253, 246, 0.24) 70%,
+      rgba(255, 253, 246, 0) 88%
+    );
+  }
+
+  .hero__copy {
+    align-items: flex-start;
+    width: 100%;
+    max-width: 34rem;
+    gap: clamp(0.7rem, 1.4vh, 1.15rem);
+    text-align: left;
+  }
+
+  .hero__eyebrow {
+    font-size: 0.9rem;
+  }
+
+  .hero__title {
+    font-size: clamp(2.5rem, 3.6vw, 3.6rem);
+    line-height: 1.08;
+  }
+
+  .hero__lead {
+    max-width: 32ch;
+    font-size: clamp(1.05rem, 1.25vw, 1.22rem);
+  }
+
+  .hero__actions {
+    flex-direction: row;
+    width: auto;
+    gap: 0.85rem;
+    margin-top: clamp(0.25rem, 1vw, 0.75rem);
+  }
+
+  .hero__cta {
+    min-height: 56px;
+    padding-inline: clamp(1.4rem, 2.4vw, 2.25rem);
+  }
+
+  .hero__cast {
+    align-self: stretch;
+    justify-content: center;
+  }
+
+  .hero__group {
+    width: 100%;
+    min-height: min(calc(var(--kid) * 1.5), 52svh);
+  }
+
+  /* Sedikit lebih tinggi daripada di ponsel supaya cakar Netty tidak
+   * bersinggungan dengan tangan Arif yang terangkat. */
+  .hero__piko {
+    left: 45%;
+    bottom: calc(var(--kid) * 0.95);
+  }
+}
+
+/* Laptop 1024x768 dan sekitarnya: susunan kiri-kanan dipertahankan, tetapi
+ * tipografi dan jaraknya dipadatkan supaya semuanya muat tanpa menggulir. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .hero {
+    padding-block: clamp(1rem, 2.4vw, 2rem);
+    --kid: clamp(192px, 16.5vw, 250px);
+  }
+  /* Layar selebar ini tidak menyisakan margin tengah, sehingga teks jatuh
+   * tepat di atas pohon kiri. Kabutnya dipersempit supaya hanya menutupi
+   * blok teks dan tidak ikut memucatkan tengah hutan. */
+  .hero__veil {
+    background: radial-gradient(
+      52% 54% at 22% 50%,
+      rgba(255, 253, 246, 0.8) 0%,
+      rgba(255, 253, 246, 0.62) 46%,
+      rgba(255, 253, 246, 0.22) 72%,
+      rgba(255, 253, 246, 0) 90%
+    );
+  }
+  .hero__copy {
+    gap: 0.6rem;
+  }
+  .hero__title {
+    font-size: clamp(2.2rem, 3.1vw, 3rem);
+  }
+  .hero__lead {
+    font-size: 1.02rem;
+  }
+  .hero__cta {
+    min-height: 52px;
+  }
+}
+
+/* =========================================================================
+ * GERAKAN
+ * Parallax hanya aktif kalau ada penunjuk presisi (tetikus/trackpad);
+ * nilai --px/--py disetel dari Hero.jsx. Di perangkat sentuh nilainya
+ * tetap 0, sehingga transform di atas tidak menghasilkan gerakan apa pun.
+ * ====================================================================== */
+
+/* Animasi masuk yang lembut, sekali jalan.
+ *
+ * Teks boleh naik sedikit karena ada di alur normal. Kelompok tokoh SENGAJA
+ * hanya memudar, tanpa geser: .hero__cast memakai transform untuk parallax,
+ * dan animasi transform pada elemen yang sama akan saling menimpa sehingga
+ * tokoh bisa melorot melewati tepi hero. */
+.hero--animate .hero__copy {
+  animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.hero--animate .hero__cast {
+  animation: hero-fade 0.8s ease 0.16s backwards;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Netty mengapung tipis (4 piksel). Tidak ada gerakan badan atau wajah.
+ * Memakai `transform`, sementara pemusatannya memakai `translate`. */
+.hero--animate .hero__piko {
+  animation: piko-float 5.5s ease-in-out 0.9s infinite;
+}
+
+@keyframes piko-float {
+  50% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__forest,
+  .hero__cast,
+  .hero__piko,
+  .hero__copy {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

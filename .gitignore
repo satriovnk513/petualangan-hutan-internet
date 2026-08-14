@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.netlify/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archives, including the manual Netlify deployment bundles
+*.zip
+
+# Local editor and tooling settings
+.claude/
+.vscode/
+.idea/

@@ -1,0 +1,12 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+
+/* Setiap pindah halaman, kembali ke bagian atas — supaya anak tidak
+ * kebingungan mendarat di tengah halaman. */
+export function useScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' })
+  }, [pathname])
+}
