@@ -39,27 +39,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
 
-  background: var(--forest-700);
-  border: 3px solid var(--leaf-300);
+  background: var(--cream-50);
+  border: 3px solid var(--forest-700);
   border-radius: 50%;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 24px rgba(35, 48, 31, 0.22), 0 0 0 3px rgba(255, 209, 102, 0.5);
   cursor: pointer;
   padding: 0;
+  overflow: hidden;
 
   /* Bounce-in saat pertama muncul */
   animation: chatbot-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both,
              chatbot-btn-bounce 3s ease-in-out 1.5s infinite;
 
-  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
 .chatbot-btn:hover {
-  background: var(--forest-800);
-  box-shadow: var(--shadow-lg), 0 0 0 5px rgba(28, 107, 74, 0.18);
-  transform: scale(1.06);
+  border-color: var(--forest-800);
+  box-shadow: 0 12px 28px rgba(35, 48, 31, 0.3), 0 0 0 5px rgba(255, 209, 102, 0.7);
+  transform: scale(1.08);
   animation: none; /* stop bounce on hover */
 }
 
@@ -68,11 +69,12 @@
   outline-offset: 3px;
 }
 
-.chatbot-btn__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
+.chatbot-btn__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
 }
 
 /* Badge titik merah untuk unread */
@@ -80,8 +82,8 @@
   position: absolute;
   top: 4px;
   right: 4px;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   background: var(--coral-500);
   border: 2px solid var(--cream-50);
   border-radius: 50%;
@@ -141,9 +143,14 @@
   }
 }
 
-.chatbot-panel__icon {
-  font-size: 1.25rem;
-  line-height: 1;
+.chatbot-panel__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--sun-400);
+  background: var(--cream-50);
+  flex-shrink: 0;
 }
 
 .chatbot-panel__title {
@@ -229,17 +236,23 @@
 }
 
 .chatmsg__avatar {
-  font-size: 1.25rem;
-  line-height: 1;
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 30%, var(--sun-200), var(--leaf-100));
+  background: var(--cream-50);
   border-radius: 50%;
-  border: 2px solid var(--cream-50);
+  border: 2px solid var(--sun-400);
+  overflow: hidden;
+}
+
+.chatmsg__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .chatmsg__bubble {
@@ -299,9 +312,13 @@
   animation: chatbot-slide-up 0.22s ease both;
 }
 
-.chatbot-thinking__bird {
-  font-size: 1.1rem;
-  line-height: 1;
+.chatbot-thinking__avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--sun-400);
+  flex-shrink: 0;
 }
 
 .chatbot-thinking__dots {

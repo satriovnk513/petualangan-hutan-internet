@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import ChatMessage from './ChatMessage'
+import pikoChatbotImg from '../../assets/characters/piko_chatbot.png'
 
 /**
  * Panel chatbot — area percakapan, input, quick chips, indikator thinking.
@@ -83,7 +84,12 @@ export default function ChatbotPanel({
     >
       {/* Header */}
       <div className="chatbot-panel__header">
-        <span className="chatbot-panel__icon" aria-hidden="true">🌳</span>
+        <img
+          src={pikoChatbotImg}
+          alt=""
+          className="chatbot-panel__avatar"
+          aria-hidden="true"
+        />
         <h2 className="chatbot-panel__title" id="chatbot-title">{t.title}</h2>
         <button
           type="button"
@@ -115,7 +121,12 @@ export default function ChatbotPanel({
         {/* Thinking indicator */}
         {isThinking && (
           <div className="chatbot-thinking" aria-label={t.thinking} role="status">
-            <span className="chatbot-panel__icon chatbot-thinking__bird" aria-hidden="true">🐦</span>
+            <img
+              src={pikoChatbotImg}
+              alt=""
+              className="chatbot-thinking__avatar"
+              aria-hidden="true"
+            />
             <div className="chatbot-thinking__dots" aria-hidden="true">
               <span />
               <span />

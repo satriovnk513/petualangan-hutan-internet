@@ -364,14 +364,14 @@ export const ui = {
       map: 'Buka Peta Hutan',
     },
     chatbot: {
-      openLabel: 'Buka Tanya Hutan Internet',
-      title: 'Tanya Hutan Internet',
+      openLabel: 'Buka Tanya Piko (AI Chatbot)',
+      title: 'Tanya Piko (AI Chatbot)',
       greeting:
-        'Halo! Aku siap membantu menjelaskan cara aman, baik, dan pintar menggunakan internet. Kamu bisa bertanya tentang data pribadi, password, kabar yang belum jelas, gambar atau video AI, pertemanan, dan cara mencari bantuan.',
+        'Halo! Aku Piko. Aku siap membantu menjelaskan cara aman, baik, dan pintar menggunakan internet. Kamu bisa bertanya tentang data pribadi, password, kabar yang belum jelas, gambar atau video AI, pertemanan, dan cara mencari bantuan.',
       inputPlaceholder: 'Tulis pertanyaanmu…',
       send: 'Kirim',
       close: 'Tutup chatbot',
-      thinking: 'Sedang berpikir…',
+      thinking: 'Piko sedang berpikir…',
       errorMessage: 'Aduh, ada gangguan. Coba kirim lagi, ya.',
       sourcePrefix: 'Sumber materi:',
       quickQuestions: [
@@ -741,14 +741,14 @@ export const ui = {
       map: 'Open the Forest Map',
     },
     chatbot: {
-      openLabel: 'Open Ask Internet Forest',
-      title: 'Ask Internet Forest',
+      openLabel: 'Open Ask Piko (AI Chatbot)',
+      title: 'Ask Piko (AI Chatbot)',
       greeting:
-        'Hello! I am ready to help explain how to use the internet safely, kindly, and wisely. You can ask about personal data, passwords, unverified news, AI images or videos, being a good friend, and how to seek help.',
+        'Hello! I am Piko. I am ready to help explain how to use the internet safely, kindly, and wisely. You can ask about personal data, passwords, unverified news, AI images or videos, being a good friend, and how to seek help.',
       inputPlaceholder: 'Type your question…',
       send: 'Send',
       close: 'Close chatbot',
-      thinking: 'Thinking…',
+      thinking: 'Piko is thinking…',
       errorMessage: 'Oops, something went wrong. Please try sending again.',
       sourcePrefix: 'Learning source:',
       quickQuestions: [
