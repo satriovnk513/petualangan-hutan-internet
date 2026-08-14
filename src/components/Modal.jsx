@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 /* Kotak dialog sederhana dengan jebakan fokus, tombol Esc,
  * dan klik di luar untuk menutup. */
@@ -47,7 +48,7 @@ export default function Modal({ open, onClose, title, children, labelledBy = 'mo
 
   if (!open) return null
 
-  return (
+  return createPortal(
     <div
       className="modal-backdrop no-print"
       onClick={(event) => {
@@ -58,6 +59,8 @@ export default function Modal({ open, onClose, title, children, labelledBy = 'mo
         <h2 id={labelledBy}>{title}</h2>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
+
