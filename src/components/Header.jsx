@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import SoundToggle from './SoundToggle'
 import LangToggle from './LangToggle'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
@@ -72,7 +71,6 @@ export default function Header() {
 
           <div className="header__actions">
             <LangToggle />
-            <SoundToggle />
             <button
               type="button"
               className="menu-toggle"
