@@ -42,6 +42,9 @@ export default function Footer() {
                 <Link to="/main">{t.footer.map}</Link>
               </li>
               <li>
+                <Link to="/ruang-belajar">{t.footer.library}</Link>
+              </li>
+              <li>
                 <Link to="/hasil">{t.footer.results}</Link>
               </li>
               <li>

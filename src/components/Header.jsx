@@ -15,6 +15,7 @@ export default function Header() {
    * Beranda dijangkau lewat logo, dan permainan lewat tombol utama di hero,
    * supaya tidak ada tombol yang berulang. */
   const navItems = [
+    { to: '/ruang-belajar', label: t.nav.library, emoji: '📚' },
     { to: '/guru', label: t.nav.teachers, emoji: '👩‍🏫' },
     { to: '/orang-tua', label: t.nav.parents, emoji: '👨‍👩‍👧' },
     { to: '/tentang', label: t.nav.about, emoji: '💡' },

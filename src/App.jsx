@@ -13,6 +13,9 @@ import Teachers from './pages/Teachers'
 import Parents from './pages/Parents'
 import About from './pages/About'
 import Privacy from './pages/Privacy'
+import Library from './pages/Library'
+import ArticleDetail from './pages/ArticleDetail'
+import AccessibilityWidget from './components/AccessibilityWidget'
 import NotFound from './pages/NotFound'
 import { useScrollToTop } from './hooks/useScrollToTop'
 import { useLang } from './i18n/LanguageContext'
@@ -56,6 +59,8 @@ export default function App() {
           <Route path="/main/:levelId" element={<Level />} />
           <Route path="/hasil" element={<Results />} />
           <Route path="/sertifikat" element={<CertificatePage />} />
+          <Route path="/ruang-belajar" element={<Library />} />
+          <Route path="/ruang-belajar/:slug" element={<ArticleDetail />} />
           <Route path="/guru" element={<Teachers />} />
           <Route path="/orang-tua" element={<Parents />} />
           <Route path="/tentang" element={<About />} />
@@ -66,7 +71,10 @@ export default function App() {
 
       <Footer />
 
-      {/* Chatbot pendamping belajar — tersedia di semua halaman */}
+      {/* Widget Aksesibilitas (Sienna) — kiri bawah */}
+      <AccessibilityWidget />
+
+      {/* Chatbot pendamping belajar — tersedia di semua halaman (kanan bawah) */}
       <ChatbotRoot />
     </div>
   )
