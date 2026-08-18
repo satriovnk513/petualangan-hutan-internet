@@ -1,9 +1,10 @@
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useParams } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
 import { getLibrary, AUDIENCE_LABELS } from '../data/library'
+import { useSEO } from '../hooks/useSEO'
 
 export default function ArticleDetail() {
   const { slug } = useParams()
@@ -18,15 +19,45 @@ export default function ArticleDetail() {
 
   const article = lib.articles?.find((a) => a.slug === slug)
 
-  useEffect(() => {
-    if (article) {
-      document.title = t.titles.articleDetail
-        ? t.titles.articleDetail(article.title)
-        : `${article.title} — ${t.library.title}`
-    } else {
-      document.title = t.titles.notFound
-    }
-  }, [article, t])
+  useSEO({
+    title: article
+      ? (t.titles.articleDetail ? t.titles.articleDetail(article.title) : `${article.title} — ${t.library.title}`)
+      : t.titles.notFound,
+    description: article?.excerpt || (lang === 'en' ? 'Article not found.' : 'Artikel tidak ditemukan.'),
+    keywords: article?.tags || ['literasi digital', 'artikel anak'],
+    ogImage: article?.thumbnail || '/og-image.png',
+    ogType: 'article',
+    lang,
+    schema: article
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          'headline': article.title,
+          'description': article.excerpt,
+          'image': article.thumbnail
+            ? `https://petualangan-hutan-internet.netlify.app${article.thumbnail}`
+            : 'https://petualangan-hutan-internet.netlify.app/og-image.png',
+          'datePublished': article.date,
+          'dateModified': article.date,
+          'author': {
+            '@type': 'Organization',
+            'name': 'Tim Petualangan Hutan Internet',
+          },
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'Petualangan Hutan Internet',
+            'logo': {
+              '@type': 'ImageObject',
+              'url': 'https://petualangan-hutan-internet.netlify.app/favicon.svg',
+            },
+          },
+          'mainEntityOfPage': {
+            '@type': 'WebPage',
+            '@id': `https://petualangan-hutan-internet.netlify.app/#/ruang-belajar/${article.slug}`,
+          },
+        }
+      : null,
+  })
 
   const galleryImages = article?.images && article.images.length > 0
     ? article.images

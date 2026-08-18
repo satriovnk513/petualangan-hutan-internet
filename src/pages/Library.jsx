@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
 import { getLibrary, AUDIENCE_LABELS } from '../data/library'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Library() {
   const { lang } = useLang()
@@ -12,9 +13,28 @@ export default function Library() {
 
   const [activeTab, setActiveTab] = useState('all')
 
-  useEffect(() => {
-    document.title = t.titles.library
-  }, [t])
+  useSEO({
+    title: t.titles.library,
+    description: lang === 'en'
+      ? 'Browse digital literacy articles, guides, classroom toolkits, and slide presentations for children, educators, and parents.'
+      : 'Pusat bacaan artikel edukasi, panduan guru, panduan orang tua, dan toolkit materi presentasi literasi media & digital anak.',
+    keywords: [
+      'ruang belajar literasi digital',
+      'artikel edukasi anak sd',
+      'toolkit guru literasi digital',
+      'materi presentasi literasi digital pdf',
+      'kegiatan literasi digital sekolah dasar',
+    ],
+    ogImage: '/images/library/seminar-literasi.jpg',
+    lang,
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      'name': t.library.title,
+      'description': t.library.intro,
+      'url': 'https://petualangan-hutan-internet.netlify.app/#/ruang-belajar',
+    },
+  })
 
   const articles = lib.articles || []
   const toolkits = lib.toolkits || []

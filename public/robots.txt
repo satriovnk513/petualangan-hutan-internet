@@ -1,0 +1,18 @@
+# ===========================================================================
+# ROBOTS.TXT — Petualangan Arif & Safira di Hutan Internet
+# https://petualangan-hutan-internet.netlify.app/
+# ===========================================================================
+
+User-agent: *
+Allow: /
+Allow: /favicon.svg
+Allow: /og-image.png
+Allow: /images/
+Allow: /materials/
+Allow: /assets/
+
+# Crawl-delay recommendation
+Crawl-delay: 1
+
+# Sitemap Location
+Sitemap: https://petualangan-hutan-internet.netlify.app/sitemap.xml

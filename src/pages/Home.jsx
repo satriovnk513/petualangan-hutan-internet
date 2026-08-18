@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import PrivacyNotice from '../components/PrivacyNotice'
@@ -8,6 +7,7 @@ import { getLevels } from '../data/levels'
 import { useGame } from '../context/GameContext'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Home() {
   const { earnedTreasures, hasProgress } = useGame()
@@ -16,9 +16,23 @@ export default function Home() {
   const content = getContent(lang)
   const levels = getLevels(lang)
 
-  useEffect(() => {
-    document.title = t.titles.home
-  }, [t])
+  useSEO({
+    title: t.titles.home,
+    description: lang === 'en'
+      ? 'Interactive story game for primary school children (grades 4–6) to learn media and information literacy, digital safety, and online wisdom. 100% free and safe.'
+      : 'Permainan cerita interaktif literasi media dan informasi untuk siswa SD kelas 4–6. Jelajahi Hutan Internet bersama Arif dan Safira, taklukkan 15 tantangan keamanan digital, dan raih sertifikat gratis.',
+    keywords: [
+      'literasi digital anak sd',
+      'game edukasi anak sd',
+      'petualangan hutan internet',
+      'arif dan safira',
+      'keamanan internet anak',
+      'media pembelajaran interaktif sd',
+      'unesco youth hackathon 2026',
+    ],
+    ogImage: '/og-image.png',
+    lang,
+  })
 
   return (
     <>

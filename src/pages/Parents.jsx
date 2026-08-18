@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PrivacyNotice from '../components/PrivacyNotice'
 import GuideBubble from '../components/GuideBubble'
 import { getContent } from '../data/content'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* CATATAN: tombol unduh PDF sengaja belum ditampilkan karena berkas
  * panduannya belum final. Setelah PDF asli tersedia, tambahkan kembali
@@ -14,9 +14,32 @@ export default function Parents() {
   const t = getUi(lang)
   const c = getContent(lang).parent
 
-  useEffect(() => {
-    document.title = t.titles.parents
-  }, [t])
+  useSEO({
+    title: t.titles.parents,
+    description: lang === 'en'
+      ? 'A supportive guide for parents to build healthy digital habits at home and communicate openly with kids about internet safety and social media.'
+      : 'Panduan orang tua dalam mendampingi anak beraktivitas digital di rumah. 5 kebiasaan sehat keluarga digital dan bahan obrolan santai tentang keamanan internet.',
+    keywords: [
+      'panduan orang tua literasi digital',
+      'tips orang tua anak main gadget',
+      'kebiasaan keluarga digital sehat',
+      'keamanan internet anak di rumah',
+      'parenting digital anak sd',
+    ],
+    ogImage: '/images/library/panduan-ortu.jpg',
+    lang,
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      'name': c.title,
+      'description': c.intro,
+      'audience': {
+        '@type': 'EducationalAudience',
+        'educationalRole': 'parent',
+      },
+      'learningResourceType': 'Parent Guide',
+    },
+  })
 
   return (
     <div className="container container--narrow section">

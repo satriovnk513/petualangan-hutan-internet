@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
 import ResetProgressButton from '../components/ResetProgressButton'
 import { getContent } from '../data/content'
 import { useGame } from '../context/GameContext'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Privacy() {
   const { storageAvailable } = useGame()
@@ -11,9 +11,19 @@ export default function Privacy() {
   const t = getUi(lang)
   const c = getContent(lang).privacy
 
-  useEffect(() => {
-    document.title = t.titles.privacy
-  }, [t])
+  useSEO({
+    title: t.titles.privacy,
+    description: lang === 'en'
+      ? 'Child privacy policy for Petualangan Hutan Internet. 100% free, no account required, no ads, and zero personal data stored on external servers.'
+      : 'Kebijakan privasi anak di Petualangan Hutan Internet. Gratis, tanpa pembuatan akun, tanpa iklan pelacak, dan seluruh data kemajuan hanya tersimpan di perangkat lokal.',
+    keywords: [
+      'kebijakan privasi anak',
+      'keamanan privasi digital anak sd',
+      'aplikasi edukasi tanpa iklan',
+      'perlindungan data anak',
+    ],
+    lang,
+  })
 
   return (
     <div className="container container--narrow section">

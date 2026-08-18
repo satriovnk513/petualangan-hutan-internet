@@ -16,6 +16,7 @@ import { useGame } from '../context/GameContext'
 import { useSound } from '../hooks/useSound'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* ===========================================================================
  * SATU LEVEL
@@ -79,9 +80,11 @@ export default function Level() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [levelId])
 
-  useEffect(() => {
-    if (level) document.title = t.titles.level(level.title)
-  }, [level, t])
+  useSEO({
+    title: level ? t.titles.level(level.title) : 'Level',
+    description: level?.summary || 'Tantangan petualangan Hutan Internet.',
+    lang,
+  })
 
   /* Setelah menjawab, arahkan fokus ke kotak umpan balik supaya
    * pengguna pembaca layar langsung mendengar hasilnya. */

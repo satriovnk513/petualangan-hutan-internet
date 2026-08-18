@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PrivacyNotice from '../components/PrivacyNotice'
 import { getContent } from '../data/content'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* CATATAN: bagian tim, sekolah mitra, dan kontak sengaja belum
  * ditampilkan karena datanya belum ada. Setelah nama tim, mitra, dan
@@ -14,9 +14,19 @@ export default function About() {
   const t = getUi(lang)
   const c = getContent(lang).about
 
-  useEffect(() => {
-    document.title = t.titles.about
-  }, [t])
+  useSEO({
+    title: t.titles.about,
+    description: lang === 'en'
+      ? 'Learn about the Petualangan Hutan Internet initiative, created for the UNESCO Youth Hackathon 2026 to foster media literacy for children.'
+      : 'Tentang inisiatif Petualangan Hutan Internet — proyek media pembelajaran literasi digital anak yang diajukan untuk UNESCO Youth Hackathon 2026.',
+    keywords: [
+      'tentang petualangan hutan internet',
+      'unesco youth hackathon 2026',
+      'inisiatif literasi digital anak indonesia',
+      'media edukasi terbuka',
+    ],
+    lang,
+  })
 
   return (
     <div className="container container--narrow section">

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { characterArt } from '../utils/assets'
 import SceneArt from '../components/SceneArt'
@@ -6,6 +5,7 @@ import { useGame } from '../context/GameContext'
 import { useSound } from '../hooks/useSound'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* Cerita pembuka sebelum anak masuk ke Hutan Internet. */
 export default function Intro() {
@@ -15,9 +15,13 @@ export default function Intro() {
   const { lang } = useLang()
   const t = getUi(lang)
 
-  useEffect(() => {
-    document.title = t.titles.intro
-  }, [t])
+  useSEO({
+    title: t.titles.intro,
+    description: lang === 'en'
+      ? 'Introductory story: Join Arif & Safira as they receive a magical invitation into the Internet Forest.'
+      : 'Cerita pembuka: Bergabunglah bersama Arif dan Safira saat menerima undangan rahasia menuju Hutan Internet.',
+    lang,
+  })
 
   const start = () => {
     play('reveal')

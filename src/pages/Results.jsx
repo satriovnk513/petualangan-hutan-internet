@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import BadgeCard from '../components/BadgeCard'
 import TreasureCard from '../components/TreasureCard'
@@ -11,6 +10,7 @@ import { getLevels, getResultTier } from '../data/levels'
 import { useGame } from '../context/GameContext'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 export default function Results() {
   const {
@@ -29,9 +29,13 @@ export default function Results() {
   const t = getUi(lang)
   const levels = getLevels(lang)
 
-  useEffect(() => {
-    document.title = t.titles.results
-  }, [t])
+  useSEO({
+    title: t.titles.results,
+    description: lang === 'en'
+      ? 'Adventure results and achievements in the Internet Forest digital literacy game.'
+      : 'Hasil petualangan dan perolehan lencana literasi media & keamanan digital di Hutan Internet.',
+    lang,
+  })
 
   const tier = getResultTier(percentage, lang)
 

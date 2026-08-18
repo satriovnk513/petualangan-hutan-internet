@@ -1,17 +1,19 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import GuideBubble from '../components/GuideBubble'
 import SceneArt from '../components/SceneArt'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 export default function NotFound() {
   const { lang } = useLang()
   const t = getUi(lang)
 
-  useEffect(() => {
-    document.title = t.titles.notFound
-  }, [t])
+  useSEO({
+    title: t.titles.notFound,
+    description: lang === 'en' ? 'Page not found.' : 'Halaman tidak ditemukan di Hutan Internet.',
+    lang,
+  })
 
   return (
     <div className="container container--narrow section">

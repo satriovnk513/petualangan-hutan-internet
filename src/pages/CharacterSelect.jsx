@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { characterArt } from '../utils/assets'
 import GuideBubble from '../components/GuideBubble'
@@ -6,6 +6,7 @@ import { useGame } from '../context/GameContext'
 import { useSound } from '../hooks/useSound'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* Pemain memilih akan bermain bersama siapa.
  * Pilihan ini hanya mengubah avatar dan sapaan — cerita tetap sama.
@@ -18,9 +19,13 @@ export default function CharacterSelect() {
   const { lang } = useLang()
   const t = getUi(lang)
 
-  useEffect(() => {
-    document.title = t.titles.select
-  }, [t])
+  useSEO({
+    title: t.titles.select,
+    description: lang === 'en'
+      ? 'Choose your adventure companion: Arif or Safira!'
+      : 'Pilih teman petualanganmu di Hutan Internet: Arif atau Safira!',
+    lang,
+  })
 
   const options = [
     { id: 'arif', name: t.select.arif, trait: t.select.arifTrait, art: 'arif_happy' },

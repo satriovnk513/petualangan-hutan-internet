@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Certificate from '../components/Certificate'
 import GuideBubble from '../components/GuideBubble'
 import { useGame } from '../context/GameContext'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* Halaman sertifikat.
  * Nama hanya disimpan di localStorage perangkat ini
@@ -15,9 +16,14 @@ export default function CertificatePage() {
   const { lang } = useLang()
   const t = getUi(lang)
 
-  useEffect(() => {
-    document.title = t.titles.certificate
-  }, [t])
+  useSEO({
+    title: t.titles.certificate,
+    description: lang === 'en'
+      ? 'Official certificate of completion for Media and Information Digital Literacy Adventure.'
+      : 'Sertifikat resmi kelulusan Petualangan Literasi Media dan Informasi Digital Anak SD.',
+    keywords: ['sertifikat literasi digital', 'sertifikat anak sd', 'kelulusan hutan internet'],
+    lang,
+  })
 
   useEffect(() => setDraft(certificateName), [certificateName])
 

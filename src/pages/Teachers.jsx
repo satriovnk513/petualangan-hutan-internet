@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PrivacyNotice from '../components/PrivacyNotice'
 import { getContent } from '../data/content'
 import { getLevels } from '../data/levels'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* CATATAN: tombol unduh PDF sengaja belum ditampilkan karena berkas
  * panduannya belum final. Setelah PDF asli tersedia, tambahkan kembali
@@ -15,9 +15,34 @@ export default function Teachers() {
   const c = getContent(lang).teacher
   const levels = getLevels(lang)
 
-  useEffect(() => {
-    document.title = t.titles.teachers
-  }, [t])
+  useSEO({
+    title: t.titles.teachers,
+    description: lang === 'en'
+      ? 'Comprehensive guide for primary school teachers to deliver 60-minute interactive digital literacy and cyber safety lessons for grades 4–6.'
+      : 'Panduan lengkap guru sekolah dasar untuk pembelajaran literasi media dan informasi digital siswa SD kelas 4–6. Dilengkapi rencana sesi 60 menit, tujuan belajar, dan materi ajar.',
+    keywords: [
+      'panduan guru literasi digital sd',
+      'modul ajar literasi digital kelas 4 5 6',
+      'materi pembelajaran keamanan siber sekolah dasar',
+      'kurikulum literasi media sd',
+      'kegiatan belajar internet sehat kelas',
+    ],
+    ogImage: '/images/library/seminar-literasi.jpg',
+    lang,
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'LearningResource',
+      'name': c.title,
+      'description': c.intro,
+      'educationalLevel': 'Primary Education (Grades 4-6)',
+      'audience': {
+        '@type': 'EducationalAudience',
+        'educationalRole': 'teacher',
+      },
+      'learningResourceType': 'Teacher Guide / Lesson Plan',
+      'timeRequired': 'PT60M',
+    },
+  })
 
   return (
     <div className="container container--narrow section">

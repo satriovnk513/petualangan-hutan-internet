@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import AdventureMap from '../components/AdventureMap'
 import BadgeCard from '../components/BadgeCard'
@@ -8,6 +7,7 @@ import { getLevels } from '../data/levels'
 import { useGame } from '../context/GameContext'
 import { useLang } from '../i18n/LanguageContext'
 import { getUi } from '../data/ui'
+import { useSEO } from '../hooks/useSEO'
 
 /* Halaman peta: pusat permainan. */
 export default function MapPage() {
@@ -17,9 +17,13 @@ export default function MapPage() {
   const t = getUi(lang)
   const levels = getLevels(lang)
 
-  useEffect(() => {
-    document.title = t.titles.map
-  }, [t])
+  useSEO({
+    title: t.titles.map,
+    description: lang === 'en'
+      ? 'Interactive adventure map of the Internet Forest with 5 unique learning locations.'
+      : 'Peta petualangan Hutan Internet dengan 5 lokasi unik: Benteng Kata Sandi, Danau Berita, Lembah Buatan, Jembatan Kebaikan, dan Pohon Bijak.',
+    lang,
+  })
 
   /* Pemain baru diarahkan ke cerita pembuka dulu. */
   if (!seenIntro && !character) return <Navigate to="/mulai" replace />
